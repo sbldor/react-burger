@@ -1,0 +1,13 @@
+.ingredients {
+   max-width: 600px;
+   
+}
+
+.tabs {
+   display: flex;
+}
+
+.container {
+   overflow-y: auto;
+   height: 62vh;
+}
