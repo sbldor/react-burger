@@ -1,9 +1,11 @@
 import React, { useRef } from 'react';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientsTab from '../ingrtdient-tab/ingredient-tab'
 import style from './burger-Ingredients.module.css';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import ingredients from "../../utils/prop-types";
+import IngredientsTab from '../ingrtdient-tab/ingredient-tab'
+
+
 
 const BurgerIngredients = (props) => {
    const [current, setCurrent] = React.useState('main')
@@ -46,7 +48,7 @@ const BurgerIngredients = (props) => {
 }
 
 BurgerIngredients.propTypes = {
-   data: PropTypes.arrayOf(ingredients)
+   data: PropTypes.arrayOf(ingredients).isRequired
 }
 
 export default BurgerIngredients

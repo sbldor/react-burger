@@ -1,17 +1,31 @@
-
+import { useState } from 'react';
 import style from './burger-constructor.module.css';
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import FinalResult from "../final-result/final-result";
 import PropTypes from 'prop-types';
 import ingredients from "../../utils/prop-types";
+import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import FinalResult from "../final-result/final-result";
+import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
+
 
 const BurgerConstructor = (props) => {
 
+   const [ingredient, setIngredient] = useState(false)
+   const togglePopup = () => {
+      setIngredient(!ingredient)
+   }
    const middleIngredients =  props.data.filter(ingr => ingr.type !== 'bun');
    const bun = props.data.filter(ingr => ingr.type === 'bun');
 
    return (
       <section className={`${style.constructor} mt-25`}>
+
+         {ingredient && 
+            <Modal onToggle={togglePopup}>
+               <OrderDetails/>
+            </Modal>
+         }
+
          <div className={`${style.bun} ml-14 pb-4`}>
             <ConstructorElement
                type='top'
@@ -45,16 +59,13 @@ const BurgerConstructor = (props) => {
                thumbnail={bun[0].image}
             />
          </div>
-         <FinalResult data={props.data}>Оформить заказ</FinalResult>
-
+         <FinalResult onToggle={togglePopup} data={props.data}>Оформить заказ</FinalResult>
       </section>
    )
 }
 
 BurgerConstructor.propTypes ={
-   data: PropTypes.arrayOf(ingredients)
+   data: PropTypes.arrayOf(ingredients).isRequired
 }
-
-
 
 export default BurgerConstructor
