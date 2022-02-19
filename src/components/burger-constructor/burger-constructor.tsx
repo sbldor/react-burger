@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import style from './burger-constructor.module.css';
 import PropTypes from 'prop-types';
 import ingredients from "../../utils/prop-types";
@@ -6,23 +6,57 @@ import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burg
 import FinalResult from "../final-result/final-result";
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
+import { IngredienttContext } from '../../services/ingredient-context';
 
 
-const BurgerConstructor = (props) => {
+
+const BurgerConstructor = () => {
+   const { ingredients } = useContext(IngredienttContext)
 
    const [ingredient, setIngredient] = useState(false)
+   //const [orderName, setOrderName] = useState('')
+   const [orederNumber, setOrederNumber] = useState(0)
    const togglePopup = () => {
       setIngredient(!ingredient)
    }
-   const middleIngredients =  props.data.filter(ingr => ingr.type !== 'bun');
-   const bun = props.data.filter(ingr => ingr.type === 'bun');
+   const resCheck = (res) => {
+      if (res.ok) {
+         return res.json();
+      } else {
+         return Promise.reject(`Что-то пошло не так( Ошибка: ${res.status}`)
+      }
+   }
+
+   const middleIngredients = ingredients.filter(ingr => ingr.type !== 'bun');
+   const bun = ingredients.filter(ingr => ingr.type === 'bun');
+   const API_ORDERS = 'https://norma.nomoreparties.space/api/orders'
+   useEffect(() => {
+      const postOrder = (api) => {
+         return fetch(api, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ingredients: ingredients.map(ingr => ingr._id)})
+         })
+            .then(resCheck)
+            .then(res => {
+               //setOrderName(res.name);
+               setOrederNumber(res.order.number)
+            })
+            .catch(err => {
+               //setOrderName('');
+               setOrederNumber(0);
+               console.error(err.message)
+            })
+      }
+      postOrder(API_ORDERS)
+   }, [])
 
    return (
       <section className={`${style.constructor} mt-25`}>
 
-         {ingredient && 
+         {ingredient && orederNumber &&
             <Modal onToggle={togglePopup}>
-               <OrderDetails/>
+               <OrderDetails number={orederNumber} />
             </Modal>
          }
 
@@ -59,13 +93,13 @@ const BurgerConstructor = (props) => {
                thumbnail={bun[0].image}
             />
          </div>
-         <FinalResult onToggle={togglePopup} data={props.data}>Оформить заказ</FinalResult>
+         <FinalResult onToggle={togglePopup}>Оформить заказ</FinalResult>
       </section>
    )
 }
 
-BurgerConstructor.propTypes ={
-   data: PropTypes.arrayOf(ingredients).isRequired
-}
+// BurgerConstructor.propTypes ={
+//    data: PropTypes.arrayOf(ingredients).isRequired
+// }
 
 export default BurgerConstructor

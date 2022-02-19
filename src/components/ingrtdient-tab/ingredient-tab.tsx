@@ -26,7 +26,7 @@ const IngredientsTab = (props) => {
          <ul className={`${style.products} mb-10 ml-4 mr-1`}>
             {props.ingredients.map(ingr => {
                return ( 
-                  <li className={style.product} key={ingr._id} onClick={() => togglePopup(ingr)}>
+                  <li key={ingr._id} onClick={() => togglePopup(ingr)}>
                         <a href="#" className={`${style.link} mb-8`}>
                            <img src={ingr.image} alt={ingr.name} className={'pr-4 pl-4 mb-1'} />
                            <div className={`${style.price} mb-2`}>
