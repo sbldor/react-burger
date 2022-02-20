@@ -3,12 +3,8 @@ import style from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-Ingredients/burger-Ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { IngredienttContext } from '../../services/ingredient-context';
-
-
-
-
-const API = 'https://norma.nomoreparties.space/api/ingredients';
+import { IngredientContext } from '../../services/ingredient-context';
+import { API_BURGERS } from '../../utils/api'
 
 const App = () => {
 
@@ -26,7 +22,7 @@ const App = () => {
 
   useEffect(()=>{
     const getData = () => {
-      fetch(API)
+      fetch(API_BURGERS+`${'ingredients'}`)
       .then(resCheck)
       .then(res => setIngredients(res.data))
       .catch(err => setError(err.message))
@@ -41,10 +37,10 @@ const App = () => {
           {load && !error && <div className={style.loader}></div>}
           {!error && !load && ingredients &&
             <main className={style.main}>
-              <IngredienttContext.Provider value={{ingredients}}>
+              <IngredientContext.Provider value={{ingredients}}>
                 <BurgerIngredients />
                 <BurgerConstructor />
-              </IngredienttContext.Provider>  
+              </IngredientContext.Provider>  
             </main>
           }
       </div>
