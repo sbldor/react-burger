@@ -17,13 +17,15 @@
    margin: 0;
    padding: 0;
    overflow-y: auto;
+   width: 100%;
+   text-align: center;
 }
 
-.ingredients {
+/* .ingredients {
    composes: bun;
    margin-bottom: 16px;
-}
+} */
 
-.ingredients:last-of-type {
+/* .ingredients:last-of-type {
    margin-bottom: 0;
-}
+} */

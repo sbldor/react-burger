@@ -1,0 +1,24 @@
+.link {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   position: relative;
+   text-decoration: none;
+   max-width: 272px;
+   color: inherit;
+}
+
+.price {
+   display: flex;
+}
+.name {
+   text-align: center;
+}
+
+.border {
+   border: solid red 1px;
+}
+
+.nulls {
+   border: 0px;
+}

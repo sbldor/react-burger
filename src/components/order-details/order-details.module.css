@@ -1,3 +1,10 @@
 .container {
    box-sizing: border-box;
 }
+
+.flex {
+   box-sizing: border-box;
+   min-height: 481.5px;
+   display: flex;
+   align-items: center;
+}

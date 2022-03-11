@@ -1,50 +1,40 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import style from './app.module.css';
 import AppHeader from '../app-header/app-header';
+import Error from '../error/error';
+import Loader from '../loader/loader';
 import BurgerIngredients from '../burger-Ingredients/burger-Ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { IngredientContext } from '../../services/ingredient-context';
-import { API_BURGERS } from '../../utils/api'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchIngredients, ingredientsSelector } from '../../services/slices/ingredients-slice';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const App = () => {
 
-  const [ingredients, setIngredients] = useState();
-  const [load, setLoad] = useState(true);
-  const [error, setError] = useState(null);
-
-  const resCheck = (res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Что-то пошло не так( Ошибка: ${res.status}`)
-    }
-  }
+  const dispatch = useDispatch()
+  const { loading, error, ingredients } = useSelector(ingredientsSelector)
 
   useEffect(()=>{
-    const getData = () => {
-      fetch(API_BURGERS+`${'ingredients'}`)
-      .then(resCheck)
-      .then(res => setIngredients(res.data))
-      .catch(err => setError(err.message))
-      .finally(() => setLoad(false))
-    }
-    getData()
+    dispatch(fetchIngredients())
   }, [])
+  
   return (
       <div className={style.page}>
           <AppHeader />
-          {error && !load && <p className={`text text_type_main-large mt-5 ${style.error}`}>{error}</p>}
-          {load && !error && <div className={style.loader}></div>}
-          {!error && !load && ingredients &&
+          {error && <Error error={error}/>}
+          {loading && <Loader/>}
+          {!error && !loading && ingredients.lenght !==0 &&
             <main className={style.main}>
-              <IngredientContext.Provider value={{ingredients}}>
+              <DndProvider backend={HTML5Backend}>
                 <BurgerIngredients />
                 <BurgerConstructor />
-              </IngredientContext.Provider>  
+              </DndProvider>
             </main>
           }
       </div>
   );
+
 }
 
 export default App;
