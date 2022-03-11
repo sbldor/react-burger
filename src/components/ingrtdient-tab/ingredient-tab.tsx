@@ -18,7 +18,7 @@ const IngredientsTab = (props) => {
          {ingredientDetailsModal && 
             // @ts-ignore
             <Modal onToggle={() => { dispatch(removeIngredientDetails()) }}>
-               <IngredientDetails {...ingredientDetails} />
+               <IngredientDetails ingr={ingredientDetails} />
             </Modal>
          }
 

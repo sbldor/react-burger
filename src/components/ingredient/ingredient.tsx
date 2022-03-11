@@ -38,11 +38,7 @@ const Ingredient = ({ingr}) => {
 }
 
 Ingredient.propTypes = {
-   ingr: PropTypes.shape({
-      image: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired
-   })
+   ingr: PropTypes.object.isRequired
 }
 
 export default Ingredient

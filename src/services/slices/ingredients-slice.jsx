@@ -28,10 +28,7 @@ export const ingredientSlice = createSlice({
       },
       closeOrderModal: (state) => { 
          state.orderModal = false 
-      },
-
-      openOrderModal: (state) => {
-         state.orderModal = true
+         state.constructorIngredients = []
       },
 
       addIngredientToConstructor: ( state, { payload }) => {
@@ -79,6 +76,7 @@ export const ingredientSlice = createSlice({
             state.orderLoading = true
          } )
          .addCase(postFinalResult.fulfilled, (state, { payload }) => {
+            state.orderModal = true
             state.orderLoading = false
             state.orderError = ''
             state.order = payload.order.number

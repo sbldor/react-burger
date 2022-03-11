@@ -1,10 +1,10 @@
-import React, {  useEffect } from 'react';
+import React from 'react';
 import style from './final-result.module.css';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDispatch, useSelector } from 'react-redux';
-import { postFinalResult, closeOrderModal, openOrderModal, ingredientsSelector } from '../../services/slices/ingredients-slice'
+import { postFinalResult, closeOrderModal, ingredientsSelector } from '../../services/slices/ingredients-slice'
 
 const FinalResult = () => {
 
@@ -20,11 +20,6 @@ const FinalResult = () => {
       [constructorIngredients]
    )
 
-   useEffect(() => {
-      {/*//@ts-ignore*/}
-      dispatch(postFinalResult(constructorIngredients))
-   }, [dispatch, constructorIngredients])
-
    return (
       <>
       <div className={`${style.container} mr-8`}>
@@ -33,7 +28,7 @@ const FinalResult = () => {
             <CurrencyIcon type='primary'/>
          </div>
             {/* @ts-ignore */}
-            <Button onClick={() => dispatch(openOrderModal())} type="primary" size="medium">Оформить заказ</Button>
+            <Button onClick={() => dispatch(postFinalResult(constructorIngredients))} type="primary" size="medium">Оформить заказ</Button>
       </div>
 
       {orderModal && 
