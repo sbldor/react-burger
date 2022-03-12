@@ -4,6 +4,7 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import { useDispatch, useSelector } from 'react-redux';
 import { showIngredientDetails, ingredientsSelector } from '../../services/slices/ingredients-slice';
 import PropTypes from 'prop-types';
+import ingredients from '../../utils/prop-types';
 
 const Ingredient = ({ingr}) => {
    const { constructorIngredients } = useSelector(ingredientsSelector)
@@ -38,7 +39,7 @@ const Ingredient = ({ingr}) => {
 }
 
 Ingredient.propTypes = {
-   ingr: PropTypes.object.isRequired
+   ingr: ingredients.isRequired
 }
 
 export default Ingredient
