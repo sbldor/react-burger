@@ -1,0 +1,33 @@
+.header {
+   display: flex;
+   /* align-items:center; */
+   width: 100%;
+   margin: 0 auto 0;
+   background-color: #1C1C21;
+   height: 88px;
+}
+
+.navbar {
+   display: flex;
+   justify-content: space-between;
+   margin: 0 auto 0;
+   width: 1260px;
+}
+
+.link {
+   text-decoration: none;
+   display: flex;
+   align-items:center;
+   color: inherit;
+}
+
+.container {
+   display: flex;
+   align-items: center;
+}
+
+.logo {
+   composes: container;
+   flex-grow: .71;
+   justify-content: space-between;
+}

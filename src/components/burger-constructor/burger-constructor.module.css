@@ -1,0 +1,31 @@
+.constructor {
+   display: flex;
+   flex-flow: column;
+   width: 600px;
+   align-items: center;
+   justify-content: start;
+}
+
+.bun {
+   display: flex;
+   align-items: center;
+}
+
+.middle {
+   height: 36vh;
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   overflow-y: auto;
+   width: 100%;
+   text-align: center;
+}
+
+/* .ingredients {
+   composes: bun;
+   margin-bottom: 16px;
+} */
+
+/* .ingredients:last-of-type {
+   margin-bottom: 0;
+} */
