@@ -4,11 +4,15 @@ import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-co
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDispatch, useSelector } from 'react-redux';
-import { postFinalResult, closeOrderModal, ingredientsSelector } from '../../services/slices/ingredients-slice'
+import { postFinalResult, closeOrderModal, ingredientsSelector } from '../../services/slices/ingredients-slice';
+import { useHistory } from 'react-router-dom'
+import { authSelector } from '../../services/slices/auth-slice'
 
 const FinalResult = () => {
 
    const { order, orderModal, constructorIngredients } = useSelector(ingredientsSelector)
+   const { auth } = useSelector(authSelector)
+   const history = useHistory()
    const dispatch = useDispatch()
 
    const finalTotal = React.useMemo(
@@ -20,6 +24,15 @@ const FinalResult = () => {
       [constructorIngredients]
    )
 
+   const addOrder = () => {
+      if (auth) {
+         //@ts-ignore
+         dispatch(postFinalResult(constructorIngredients))
+      } else { 
+         history.replace({ pathname: '/login' })
+      }
+   }
+
    return (
       <>
       <div className={`${style.container} mr-8`}>
@@ -27,8 +40,8 @@ const FinalResult = () => {
             <span className={'text text_type_digits-medium mr-2'}>{finalTotal}</span>
             <CurrencyIcon type='primary'/>
          </div>
-            {/* @ts-ignore */}
-            <Button onClick={() => dispatch(postFinalResult(constructorIngredients))} type="primary" size="medium">Оформить заказ</Button>
+            
+            <Button onClick={() => dispatch(addOrder())} type="primary" size="medium">Оформить заказ</Button>
       </div>
 
       {orderModal && 

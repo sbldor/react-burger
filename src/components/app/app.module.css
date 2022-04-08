@@ -1,48 +1,11 @@
 .page {
-  /* max-width: 2000px; */
   margin: 0 auto 0;
   background-color: #131316;
 }
 
-.main {
-  max-width: 1260px;
-  display: flex;
-  gap: 60px;
-  margin: 0 auto 0;
+.title {
+  width: 100%;
+  text-align: start;
 }
 
-/* .error {
-  text-align: center;
-} */
 
-/* .loader {
-  margin: 10vh auto 0;
-  position: relative;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: conic-gradient(#4c4cff, transparent);
-
-  animation: rotating 1s linear infinite;
-}
-
-.loader::before {
-  content: '';
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  top: 10px;
-  left: 10px;
-  border-radius: 50%;
-  background: #131316;
-}
-
-@keyframes rotating {
-    from {
-        transform: rotate(360deg);
-        
-    }
-    to {
-        transform: rotate(0deg);
-    }
-} */

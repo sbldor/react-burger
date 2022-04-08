@@ -4,7 +4,6 @@ import { API_BURGERS, resCheck } from '../../utils/api';
 export const initialState = {
    ingredients: [],
    constructorIngredients: [],
-   ingredientDetails: null,
    ingredientDetailsModal: false,
    orderModal: false,
    order: 0,
@@ -18,12 +17,10 @@ export const ingredientSlice = createSlice({
    name: 'ingredients',
    initialState,
    reducers: {
-      showIngredientDetails: ( state, {payload} ) => {
-         state.ingredientDetails = payload
+      showIngredientDetails: ( state ) => {
          state.ingredientDetailsModal = true
       },
       removeIngredientDetails: (state) => {
-         state.ingredientDetails = null
          state.ingredientDetailsModal = false
       },
       closeOrderModal: (state) => { 
@@ -94,7 +91,6 @@ export const {
    showIngredientDetails,
    removeIngredientDetails,
    closeOrderModal,
-   openOrderModal,
    addIngredientToConstructor,
    deleteIngredientFromConstructor,
    dragIngredients
@@ -123,6 +119,7 @@ export const postFinalResult = createAsyncThunk(
          const res = await fetch(API_BURGERS + `${'orders'}`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            // @ts-ignore
             body: JSON.stringify({ ingredients: ingredients.map(ingr => ingr._id) })
          })
          const result = await resCheck(res)
