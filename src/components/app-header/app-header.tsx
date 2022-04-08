@@ -9,7 +9,7 @@ const AppHeader = () => {
    const { pathname } = useLocation()
    const home = pathname === '/'
    const feed = pathname === '/feed'
-   const profile = pathname === '/profile' || pathname === '/profile/orders'
+   const profile = pathname === '/profile' || pathname === '/profile/orders' || pathname === '/login'
 
    useEffect(()=>{
       if (pathname === '/') {
