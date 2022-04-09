@@ -7,7 +7,7 @@ import { forgotPassword, authSelector } from '../../services/slices/auth-slice'
 
 const ForgotPassword = () => {
    const dispatch = useDispatch()
-   const { forgotPassRequestSuccess, auth } = useSelector(authSelector)
+   const { forgotPass, auth } = useSelector(authSelector)
    const location = useLocation()
    const [email, addEmail] = useState('')
 
@@ -17,7 +17,7 @@ const ForgotPassword = () => {
       dispatch(forgotPassword(email))
    }
 
-   if (forgotPassRequestSuccess) {
+   if (forgotPass) {
       return (
          <Redirect to='/reset-password' />
       )

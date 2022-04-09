@@ -45,7 +45,7 @@ const authSlice = createSlice({
             state.userData.email = payload.user.email
             state.userData.password = ''
             state.error = ''
-            setCookie('accessToken', payload.accessToken, { expires: 20 * 60 });
+            setCookie('accessToken', payload.accessToken, { expires: 1 * 60 });
             setCookie('refreshToken', payload.refreshToken)
          })
          .addCase(registerUser.rejected, (state, { payload }) => {
@@ -93,7 +93,7 @@ const authSlice = createSlice({
             state.userData.name = payload.user.name
             state.userData.email = payload.user.email
             state.userData.password = ''
-            setCookie('accessToken', payload.accessToken, { expires: 20 * 60 });
+            setCookie('accessToken', payload.accessToken, { expires: 1 * 60 });
             setCookie('refreshToken', payload.refreshToken)
          })
          .addCase(loginRequest.rejected, (state, { payload }) => {
@@ -163,7 +163,7 @@ const authSlice = createSlice({
             state.loading = true 
          })
          .addCase(getToken.fulfilled, (state, { payload }) => {
-            setCookie('accessToken', payload.accessToken, { expires: 20 * 60 })
+            setCookie('accessToken', payload.accessToken, { expires: 1 * 60 })
             setCookie('refreshToken', payload.refreshToken)
             state.auth = true
          })
@@ -225,7 +225,7 @@ export const resetPassword = createAsyncThunk(
    // @ts-ignore
    async (form, { rejectWithValue }) => {
       try {
-         const res = await fetch('password-reset/reset' + 'reset', {
+         const res = await fetch(baseUrl + 'password-reset/reset', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(form)
@@ -243,7 +243,7 @@ export const loginRequest = createAsyncThunk(
    // @ts-ignore
    async (form, { rejectWithValue }) => {
       try {
-         const res = await fetch(baseUrl + 'auth/logout', {
+         const res = await fetch(baseUrl + 'auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(form)
@@ -261,7 +261,7 @@ export const logoutRequest = createAsyncThunk(
    // @ts-ignore
    async (_, { rejectWithValue }) => {
       try {
-         const res = await fetch(baseUrl + 'auth/user', {
+         const res = await fetch(baseUrl + 'auth/logout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'token': getCookie('refreshToken') })
