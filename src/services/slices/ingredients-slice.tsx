@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
-import { API_BURGERS, resCheck } from '../../utils/api';
+import { baseUrl, resCheck } from '../../utils/api';
 
 export const initialState = {
    ingredients: [],
@@ -103,7 +103,7 @@ export const fetchIngredients = createAsyncThunk(
    'ingredients/fetchIngredients',
    async ( _, { rejectWithValue }) => {
       try {
-         const res = await fetch(API_BURGERS + `${'ingredients'}`)
+         const res = await fetch(baseUrl + `${'ingredients'}`)
          const data = await resCheck(res)
          return data
       } catch (err) {
@@ -116,7 +116,7 @@ export const postFinalResult = createAsyncThunk(
    'ingredients/postFinalResult',
    async (ingredients, { rejectWithValue }) => {
       try {
-         const res = await fetch(API_BURGERS + `${'orders'}`,{
+         const res = await fetch(baseUrl + `${'orders'}`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             // @ts-ignore

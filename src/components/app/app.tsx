@@ -11,15 +11,15 @@ import { getUser, authSelector, getToken } from '../../services/slices/auth-slic
 import { getCookie } from '../../utils/cookies';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-
+import { ingredientsSelector, removeIngredientDetails } from '../../services/slices/ingredients-slice'
 import { Home, Login, Register, ForgotPassword, ResetPassword, PageNotFound, Profile, IngredientModalPage } from '../../pages';
 
 const App = () => {
-
+  
   const dispatch = useDispatch()
   const location = useLocation()
   const history = useHistory()
-
+  let background = location.state && location.state.background;
   const { auth } = useSelector(authSelector)
 
   useEffect(()=>{
@@ -34,6 +34,7 @@ const App = () => {
   }, [])
 
   const closeModal = () => {
+    dispatch(removeIngredientDetails())
     history.goBack()
   }
   
@@ -41,7 +42,7 @@ const App = () => {
       <div className={style.page}>
           <AppHeader />
           <div>
-            <Switch>
+            <Switch location={background || location}>
               <Route path='/' exact>
                 <DndProvider backend={HTML5Backend}>
                   <Home />
@@ -70,14 +71,15 @@ const App = () => {
               </Route>
               
             </Switch>
-        {location.state &&
-          <Route path='/ingredients/:ingredientId' exact>
+        {background && 
+          <Route path='/ingredients/:ingredientId' exact >
             <Modal onToggle={closeModal}>
               <h2 className={`${style.title} text text_type_main-large mt-4 mb-2`}>Детали ингредиента</h2>
               <IngredientDetails />
             </Modal>
           </Route>
         }
+
           </div>
       
       </div>

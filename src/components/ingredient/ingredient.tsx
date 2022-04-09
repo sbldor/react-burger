@@ -12,7 +12,6 @@ const Ingredient = ({ingr}) => {
    const { constructorIngredients } = useSelector(ingredientsSelector)
    const dispatch = useDispatch()
    const location = useLocation()
-   
 
    const count = constructorIngredients.filter(i => i._id === ingr._id).length
    const [{ isDrag }, dragRef] = useDrag({

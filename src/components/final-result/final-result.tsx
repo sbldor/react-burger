@@ -33,6 +33,7 @@ const FinalResult = () => {
       }
    }
 
+
    return (
       <>
       <div className={`${style.container} mr-8`}>
@@ -41,7 +42,7 @@ const FinalResult = () => {
             <CurrencyIcon type='primary'/>
          </div>
             
-            <Button onClick={() => dispatch(addOrder())} type="primary" size="medium">Оформить заказ</Button>
+            <Button onClick={() => addOrder()} type="primary" size="medium">Оформить заказ</Button>
       </div>
 
       {orderModal && 

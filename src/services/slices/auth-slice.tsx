@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { API_AUTH, API_RESET, resCheck } from '../../utils/api'
+import { baseUrl, resCheck } from '../../utils/api'
 import { getCookie, setCookie, deleteCookie } from '../../utils/cookies';
 
 export const initialState = {
@@ -189,7 +189,7 @@ export const registerUser = createAsyncThunk(
    'auth/registerUser',
    async (form, { rejectWithValue }) => {
       try {
-         const res = await fetch(API_AUTH + 'register', {
+         const res = await fetch(baseUrl + 'auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(form)
@@ -207,7 +207,7 @@ export const forgotPassword = createAsyncThunk(
    // @ts-ignore
    async (email, { rejectWithValue }) => {
       try {
-         const res = await fetch(API_RESET, {
+         const res = await fetch(baseUrl + 'password-reset', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'email': email })
@@ -225,7 +225,7 @@ export const resetPassword = createAsyncThunk(
    // @ts-ignore
    async (form, { rejectWithValue }) => {
       try {
-         const res = await fetch(API_RESET + 'reset', {
+         const res = await fetch('password-reset/reset' + 'reset', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(form)
@@ -243,7 +243,7 @@ export const loginRequest = createAsyncThunk(
    // @ts-ignore
    async (form, { rejectWithValue }) => {
       try {
-         const res = await fetch(API_AUTH + 'login', {
+         const res = await fetch(baseUrl + 'auth/logout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(form)
@@ -261,7 +261,7 @@ export const logoutRequest = createAsyncThunk(
    // @ts-ignore
    async (_, { rejectWithValue }) => {
       try {
-         const res = await fetch(API_AUTH + 'logout', {
+         const res = await fetch(baseUrl + 'auth/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'token': getCookie('refreshToken') })
@@ -280,7 +280,7 @@ export const getUser = createAsyncThunk(
    async (_, { rejectWithValue }) => {
       try {
          if (getCookie('accessToken')) {
-            const res = await fetch(API_AUTH + 'user', {
+            const res = await fetch(baseUrl + 'auth/user', {
                method: 'GET',
                headers: {
                   'Content-Type': 'application/json',
@@ -305,7 +305,7 @@ export const updateUser = createAsyncThunk(
    async (form, { rejectWithValue }) => {
       try {
          if (getCookie('accessToken')) {
-            const res = await fetch(API_AUTH + 'user', {
+            const res = await fetch(baseUrl + 'auth/user', {
                method: 'PATCH',
                headers: {
                   'Content-Type': 'application/json',
@@ -330,7 +330,7 @@ export const getToken = createAsyncThunk(
    // @ts-ignore
    async (_, { rejectWithValue }) => {
       try {
-         const res = await fetch(API_AUTH + 'token', {
+         const res = await fetch(baseUrl + 'auth/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'token': getCookie('refreshToken') })
