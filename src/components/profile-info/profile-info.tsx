@@ -1,8 +1,9 @@
 import style from './profile-info.module.css'
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useState, useEffect } from 'react'
-import { resetError, authSelector, getUser, updateUser } from '../../services/slices/auth-slice'
+import { resetError, authSelector, getUser, updateUser, getToken } from '../../services/slices/auth-slice'
 import { useDispatch, useSelector } from 'react-redux'
+import { getCookie } from '../../utils/cookies';
 
 const ProfileInfo = () => {
 
@@ -14,6 +15,15 @@ const ProfileInfo = () => {
       password: ''
    })
    const [btns, viewBtns] = useState(false)
+
+   // useEffect(() => {
+   //    if (getCookie('refreshToken') && getCookie('accessToken') === null) {
+   //       dispatch(getToken())
+   //    }
+   //    if (getCookie('accessToken') !== null) {
+   //       dispatch(getUser())
+   //    }
+   // }, [])
 
    const onFocus = () => {
       dispatch(resetError())

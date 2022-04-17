@@ -289,10 +289,7 @@ export const getUser = createAsyncThunk(
             })
             const data = await resCheck(res)
             return data
-         } else {
-            getToken()
-            getUser()
-         }
+         } 
       } catch (err) {
          return rejectWithValue(err)
       }
@@ -317,7 +314,6 @@ export const updateUser = createAsyncThunk(
             return data
          } else {
             await getToken()
-            await getUser()
          }
       } catch (err) {
          return rejectWithValue(err)

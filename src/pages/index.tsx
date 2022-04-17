@@ -6,5 +6,6 @@ import Home from './home/home';
 import PageNotFound from './not-found/page-not-found';
 import Profile from './profile/profile';
 import IngredientModalPage from './modal/modal';
+import Feed from './feed/feed';
 
-export { Home, Login, Register, ForgotPassword, ResetPassword, PageNotFound, Profile, IngredientModalPage }
+export { Home, Login, Register, ForgotPassword, ResetPassword, PageNotFound, Profile, IngredientModalPage, Feed }

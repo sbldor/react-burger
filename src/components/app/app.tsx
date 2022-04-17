@@ -12,7 +12,7 @@ import { getCookie } from '../../utils/cookies';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { ingredientsSelector, removeIngredientDetails } from '../../services/slices/ingredients-slice'
-import { Home, Login, Register, ForgotPassword, ResetPassword, PageNotFound, Profile, IngredientModalPage } from '../../pages';
+import { Home, Login, Register, ForgotPassword, ResetPassword, PageNotFound, Profile, IngredientModalPage, Feed } from '../../pages';
 
 const App = () => {
   
@@ -32,6 +32,30 @@ const App = () => {
       }
     }
   }, [])
+  
+
+
+  
+  // useEffect(() => {
+  //   dispatch(fetchIngredients())
+  //   if (getCookie('refreshToken') && !auth ) {
+  //     dispatch(getToken())
+      
+  //   }
+  // }, [])
+
+  // useEffect(() => {
+  //   dispatch(fetchIngredients())
+  //   dispatch(getToken())
+  //   if (getCookie('refreshToken')) {
+  //     dispatch(getUser())
+  //     if (!auth) {
+  //       dispatch(getToken())
+  //       dispatch(getUser())
+  //     }
+  //   }
+    
+  // }, [])
 
   const closeModal = () => {
     dispatch(removeIngredientDetails())
@@ -51,6 +75,9 @@ const App = () => {
               <ProtectRoute path='/profile' >
                 <Profile />
               </ProtectRoute>
+              <Route path='/feed' exact >
+                <Feed />
+              </Route>
               <Route path='/login' exact>
                 <Login />
               </Route>
