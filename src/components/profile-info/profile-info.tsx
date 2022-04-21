@@ -16,14 +16,18 @@ const ProfileInfo = () => {
    })
    const [btns, viewBtns] = useState(false)
 
-   // useEffect(() => {
-   //    if (getCookie('refreshToken') && getCookie('accessToken') === null) {
-   //       dispatch(getToken())
-   //    }
-   //    if (getCookie('accessToken') !== null) {
-   //       dispatch(getUser())
-   //    }
-   // }, [])
+   useEffect(() => {
+      if (
+         localStorage.getItem("refreshToken") &&
+         getCookie("accessToken") == null
+      ) {
+         // @ts-ignore
+         dispatch(updateToken()).then(() => dispatch(getUser()));
+      }
+      if (getCookie("accessToken")) {
+         dispatch(getUser());
+      }
+   }, []);
 
    const onFocus = () => {
       dispatch(resetError())

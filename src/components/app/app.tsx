@@ -12,8 +12,8 @@ import { getCookie } from '../../utils/cookies';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { ingredientsSelector, removeIngredientDetails } from '../../services/slices/ingredients-slice'
-import { Home, Login, Register, ForgotPassword, ResetPassword, PageNotFound, Profile, IngredientModalPage, Feed } from '../../pages';
-
+import { Home, Login, Register, ForgotPassword, ResetPassword, PageNotFound, Profile, IngredientModalPage, Feed, ModalOrder } from '../../pages';
+import FeedDetals from '../feed-detals/feed-detals';
 const App = () => {
   
   const dispatch = useDispatch()
@@ -22,31 +22,8 @@ const App = () => {
   let background = location.state && location.state.background;
   const { auth } = useSelector(authSelector)
 
-  useEffect(()=>{
-    dispatch(fetchIngredients())
-    if (getCookie('refreshToken')) {
-      dispatch(getUser())
-      if (!auth) {
-        dispatch(getToken())
-        dispatch(getUser())
-      }
-    }
-  }, [])
-  
-
-
-  
-  // useEffect(() => {
+  // useEffect(()=>{
   //   dispatch(fetchIngredients())
-  //   if (getCookie('refreshToken') && !auth ) {
-  //     dispatch(getToken())
-      
-  //   }
-  // }, [])
-
-  // useEffect(() => {
-  //   dispatch(fetchIngredients())
-  //   dispatch(getToken())
   //   if (getCookie('refreshToken')) {
   //     dispatch(getUser())
   //     if (!auth) {
@@ -54,8 +31,15 @@ const App = () => {
   //       dispatch(getUser())
   //     }
   //   }
-    
   // }, [])
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+    if (localStorage.getItem("refreshToken") && !auth && !background) {
+      dispatch(getToken());
+    }
+  }, []);
+
 
   const closeModal = () => {
     dispatch(removeIngredientDetails())
@@ -93,18 +77,33 @@ const App = () => {
               <Route path='/ingredients/:ingredientId' exact>
                 <IngredientModalPage />
               </Route>
+              <Route path='/feed/:id' exact>
+                <ModalOrder />
+              </Route>
               <Route>
                 <PageNotFound />
               </Route>
               
             </Switch>
         {background && 
+        <Switch>
           <Route path='/ingredients/:ingredientId' exact >
             <Modal onToggle={closeModal}>
               <h2 className={`${style.title} text text_type_main-large mt-4 mb-2`}>Детали ингредиента</h2>
               <IngredientDetails />
             </Modal>
           </Route>
+            <Route path='/feed/:id' exact >
+            <Modal onToggle={closeModal}>
+              <FeedDetals />
+            </Modal>
+          </Route>
+          <Route path='/profile/orders/:id' exact >
+            <Modal onToggle={closeModal}>
+              <FeedDetals />
+            </Modal>
+          </Route>
+        </Switch>
         }
 
           </div>

@@ -7,7 +7,7 @@ import { ingredientsSelector } from '../../services/slices/ingredients-slice'
 const IngredientModalPage = () => {
 
    const { ingredientId } = useParams()
-   const { loading, ingredients, ingredientDetailsModal } = useSelector(ingredientsSelector)
+   const { loading, ingredients } = useSelector(ingredientsSelector)
    const currentIngr =  ingredients.find(ingr => ingr._id === ingredientId)
    const location = useLocation
 

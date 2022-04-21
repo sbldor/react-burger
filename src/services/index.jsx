@@ -2,10 +2,12 @@ import { combineReducers } from 'redux'
 
 import { ingredientsReducer } from './slices/ingredients-slice'
 import { authReducer } from './slices/auth-slice'
+import { wsReducer } from "./slices/feed-ws-slice";
 
 const rootReducer = combineReducers({
    ingredients: ingredientsReducer,
-   auth: authReducer
+   auth: authReducer,
+   webSocket: wsReducer
 })
 
 export default rootReducer

@@ -4,7 +4,7 @@ import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-co
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDispatch, useSelector } from 'react-redux';
-import { postFinalResult, closeOrderModal, ingredientsSelector } from '../../services/slices/ingredients-slice';
+import { postFinalResult, closeOrderModal, openOrderModal, ingredientsSelector } from '../../services/slices/ingredients-slice';
 import { useHistory } from 'react-router-dom'
 import { authSelector } from '../../services/slices/auth-slice'
 
@@ -26,6 +26,7 @@ const FinalResult = () => {
 
    const addOrder = () => {
       if (auth) {
+         dispatch(openOrderModal())
          //@ts-ignore
          dispatch(postFinalResult(constructorIngredients))
       } else { 
@@ -36,6 +37,7 @@ const FinalResult = () => {
 
    return (
       <>
+      {constructorIngredients.length >1 &&
       <div className={`${style.container} mr-8`}>
          <div className={`${style.total} mr-10`}>
             <span className={'text text_type_digits-medium mr-2'}>{finalTotal}</span>
@@ -44,6 +46,8 @@ const FinalResult = () => {
             
             <Button onClick={() => addOrder()} type="primary" size="medium">Оформить заказ</Button>
       </div>
+      }
+      
 
       {orderModal && 
       <>

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
 import { baseUrl, resCheck } from '../../utils/api';
+import { getCookie } from '../../utils/cookies'
 
 export const initialState = {
    ingredients: [],
@@ -26,6 +27,9 @@ export const ingredientSlice = createSlice({
       closeOrderModal: (state) => { 
          state.orderModal = false 
          state.constructorIngredients = []
+      },
+      openOrderModal: (state) => {
+         state.orderModal = true
       },
 
       addIngredientToConstructor: ( state, { payload }) => {
@@ -73,7 +77,7 @@ export const ingredientSlice = createSlice({
             state.orderLoading = true
          } )
          .addCase(postFinalResult.fulfilled, (state, { payload }) => {
-            state.orderModal = true
+            // state.orderModal = true
             state.orderLoading = false
             state.orderError = ''
             state.order = payload.order.number
@@ -91,6 +95,7 @@ export const {
    showIngredientDetails,
    removeIngredientDetails,
    closeOrderModal,
+   openOrderModal,
    addIngredientToConstructor,
    deleteIngredientFromConstructor,
    dragIngredients
@@ -118,7 +123,8 @@ export const postFinalResult = createAsyncThunk(
       try {
          const res = await fetch(baseUrl + `${'orders'}`,{
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json',
+            authorization: getCookie("accessToken")},
             // @ts-ignore
             body: JSON.stringify({ ingredients: ingredients.map(ingr => ingr._id) })
          })
