@@ -31,8 +31,8 @@ const ProfileOrders = () => {
 
    return (
       <>
-         {loading && <Loader />}
-         {!loading && (
+         {reversedFeed.length === 0 && <Loader />}
+         {reversedFeed.length !== 0 && (
             <section className={`${style.feed} custom-scroll `}>
                <Orders feed={reversedFeed} />
             </section>
