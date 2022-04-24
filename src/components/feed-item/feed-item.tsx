@@ -15,23 +15,18 @@ const FeedItem = ({feed}) => {
    let ingrFeed = []
 
    feed.ingredients.forEach(item => {
+      if (item !== null)
       ingrFeed.push(ingredients.find((el) => el._id === item));
    });
 
    const finalTotal = React.useMemo(
-      () => {
-         const total = ingrFeed.filter(ingr => ingr.type !== 'bun').reduce((sum, it) => sum + it.price, 0);
-         const totalBun = ingrFeed.some(ingr => ingr.type === 'bun') ? ingrFeed.find(ingr => ingr.type === 'bun').price : 0
-         return total + totalBun;
-      },
-      [ingrFeed]
-   )
+      () => ingrFeed.length !== 0 ? ingrFeed.reduce((sum, item) => sum + item.price, 0) : 0, [ingrFeed]
+   ) 
 
-   console.log(feed)
-
-   let ingrs = ingrFeed.slice(0, 5).reverse()
+   let ingrs = ingrFeed.length > 5 ? ingrFeed.slice(0, 5).reverse() : ingrFeed
    let lastIngrs = ingrFeed.slice(5, 6).reverse()
    let countLotsOfIngrs = ingrFeed.slice(5).length
+   
    return (
       <Link to={{ pathname: `${location.pathname}/${feed._id}`, state: { background: location } }} className={`${style.feed} p-6 mb-4 mr-2`}>
          <div className={`${style.cont_info}`}>
