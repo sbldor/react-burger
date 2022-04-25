@@ -19,9 +19,9 @@ const authSlice = createSlice({
    name: 'aurh',
    initialState,
    reducers: {
-      // checkAuth: state => { 
-      //    getCookie('refreshToken') ? getToken() : state.auth = false
-      // },
+      checkAuth: state => { 
+         getCookie('refreshToken') ? getToken() : state.auth = false
+      },
       resetError: state => { 
          state.error = '' 
       },
@@ -176,7 +176,7 @@ const authSlice = createSlice({
 })
 
 export const {
-   // checkAuth,
+   checkAuth,
    resetError,
    resetForgotPass,
    resetResetPass
