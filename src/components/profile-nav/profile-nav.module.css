@@ -1,0 +1,29 @@
+.nav {
+   display: flex;
+   flex-direction: column;
+   max-width: 320px;
+}
+
+.link {
+   display: flex;
+   align-items: center;
+   height: 64px;
+   text-decoration: none;
+}
+
+.link_active {
+   display: flex;
+   align-items: center;
+   height: 64px;
+   text-decoration: none;
+   color: #F2F2F3
+}
+
+.link:hover {
+   opacity: 0.8;
+}
+
+.text {
+   opacity: 0.4;
+   max-width: 320px;
+}
