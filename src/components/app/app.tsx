@@ -22,17 +22,6 @@ const App = () => {
   let background = location.state && location.state.background;
   const { auth } = useSelector(authSelector)
 
-  // useEffect(()=>{
-  //   dispatch(fetchIngredients())
-  //   if (getCookie('refreshToken')) {
-  //     dispatch(getUser())
-  //     if (!auth) {
-  //       dispatch(getToken())
-  //       dispatch(getUser())
-  //     }
-  //   }
-  // }, [])
-
   useEffect(() => {
     dispatch(fetchIngredients());
     if (localStorage.getItem("refreshToken") && !auth && !background) {
@@ -40,11 +29,12 @@ const App = () => {
     }
   }, []);
 
-
   const closeModal = () => {
     dispatch(removeIngredientDetails())
     history.goBack()
   }
+
+  const status = 'orders'
   
   return (
       <div className={style.page}>
@@ -56,7 +46,7 @@ const App = () => {
                   <Home />
                 </DndProvider>
               </Route>
-              <ProtectRoute path='/profile' >
+              <ProtectRoute path='/profile'>
                 <Profile />
               </ProtectRoute>
               <Route path='/feed' exact >
@@ -78,7 +68,7 @@ const App = () => {
                 <IngredientModalPage />
               </Route>
               <Route path='/feed/:id' exact>
-                <ModalOrder />
+                <ModalOrder status={status}/>
               </Route>
               <Route>
                 <PageNotFound />
@@ -93,7 +83,7 @@ const App = () => {
               <IngredientDetails />
             </Modal>
           </Route>
-            <Route path='/feed/:id' exact >
+          <Route path='/feed/:id' exact >
             <Modal onToggle={closeModal}>
               <FeedDetals />
             </Modal>

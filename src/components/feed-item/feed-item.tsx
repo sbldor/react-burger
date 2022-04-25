@@ -26,7 +26,7 @@ const FeedItem = ({feed}) => {
    let ingrs = ingrFeed.length > 5 ? ingrFeed.slice(0, 5).reverse() : ingrFeed
    let lastIngrs = ingrFeed.slice(5, 6).reverse()
    let countLotsOfIngrs = ingrFeed.slice(5).length
-   
+
    return (
       <Link to={{ pathname: `${location.pathname}/${feed._id}`, state: { background: location } }} className={`${style.feed} p-6 mb-4 mr-2`}>
          <div className={`${style.cont_info}`}>
