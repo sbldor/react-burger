@@ -8,7 +8,7 @@ import { postFinalResult, closeOrderModal, openOrderModal, ingredientsSelector }
 import { useHistory } from 'react-router-dom';
 import { authSelector } from '../../services/slices/auth-slice';
 import { FC } from 'react';
-import { TIngredient } from '../../utils/types';
+//import { TIngredient } from '../../utils/types';
 
 const FinalResult: FC = () => {
 
@@ -19,8 +19,8 @@ const FinalResult: FC = () => {
 
    const finalTotal: number = React.useMemo(
       () => {
-         const total = constructorIngredients.filter((ingr: TIngredient) => ingr.type !== 'bun').reduce((sum: number, it: TIngredient) => sum + it.price, 0);
-         const totalBun = constructorIngredients.some((ingr: TIngredient) => ingr.type === 'bun') ? constructorIngredients.find((ingr: TIngredient) => ingr.type === 'bun').price : 0
+         const total = constructorIngredients.filter((ingr) => ingr.type !== 'bun').reduce((sum, it) => sum + it.price, 0);
+         const totalBun = constructorIngredients.some((ingr) => ingr.type === 'bun') ? constructorIngredients.find((ingr) => ingr.type === 'bun').price : 0
          return total + totalBun;
       },
       [constructorIngredients]

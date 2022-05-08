@@ -17,7 +17,7 @@ const Ingredient: FC<IIngredirnt> = ({ingr}) => {
    const dispatch = useAppDispatch();
    const location = useLocation<TLocation>();
 
-   const count: number = constructorIngredients.filter((i: TIngredient) => i._id === ingr._id).length;
+   const count: number = constructorIngredients.filter((i) => i._id === ingr._id).length;
 
    const [{ isDrag }, dragRef] = useDrag({
       type: 'ingredient',

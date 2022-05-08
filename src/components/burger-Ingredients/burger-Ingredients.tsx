@@ -4,7 +4,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsTab from '../ingrtdient-tab/ingredient-tab';
 import { useAppSelector } from '../../services';
 import { ingredientsSelector } from '../../services/slices/ingredients-slice';
-import { TIngredient } from '../../utils/types';
+//import { TIngredient } from '../../utils/types';
 
 const BurgerIngredients: FC = () => {
 
@@ -22,7 +22,7 @@ const BurgerIngredients: FC = () => {
       ref.current.scrollIntoView({ behavior: 'smooth' })
    }
 
-   const findIngredients = (ingredientsType: string) => ingredients.filter((ingr: TIngredient) => ingr.type === ingredientsType);
+   const findIngredients = (ingredientsType: string) => ingredients.filter((ingr) => ingr.type === ingredientsType);
 
    const handleScroll = () => {
       const scrollPosition: number = scrollRef.current.getBoundingClientRect().top

@@ -21,16 +21,16 @@ const FeedItem: FC<IFeedItem> = ({feed}) => {
 
    feed.ingredients.forEach(item => {
       if (item !== null)
-      ingrFeed.push(ingredients.find((el: TIngredient) => el._id === item));
+      ingrFeed.push(ingredients.find((el) => el._id === item));
    });
 
    const finalTotal: number = React.useMemo(
-      () => ingrFeed.length !== 0 ? ingrFeed.reduce((sum: number, item: TIngredient) => sum + item.price, 0) : 0, [ingrFeed]
+      () => ingrFeed.length !== 0 ? ingrFeed.reduce((sum, item) => sum + item.price, 0) : 0, [ingrFeed]
    ) 
 
-   let ingrs: TIngredient[] = ingrFeed.length > 5 ? ingrFeed.slice(0, 5).reverse() : ingrFeed
-   let lastIngrs: TIngredient[] = ingrFeed.slice(5, 6).reverse()
-   let countLotsOfIngrs: number = ingrFeed.slice(5).length
+   let ingrs = ingrFeed.length > 5 ? ingrFeed.slice(0, 5).reverse() : ingrFeed
+   let lastIngrs = ingrFeed.slice(5, 6).reverse()
+   let countLotsOfIngrs = ingrFeed.slice(5).length
 
    return (
       <Link to={{ pathname: `${location.pathname}/${feed._id}`, state: { background: location } }} className={`${style.feed} p-6 mb-4 mr-2`}>

@@ -46,7 +46,7 @@ export const ingredientSlice = createSlice({
          state.orderModal = true
       },
 
-      addIngredientToConstructor: ( state, { payload }: PayloadAction<TIngredient>) => {
+      addIngredientToConstructor: ( state, { payload }) => {
          if (payload.type !== 'bun' && state.constructorIngredients.length === 0) {
                state.constructorIngredients = []
             } else {
@@ -55,7 +55,7 @@ export const ingredientSlice = createSlice({
             }
       },
 
-      deleteIngredientFromConstructor: (state, { payload }: PayloadAction<TIngredient>) => {
+      deleteIngredientFromConstructor: (state, { payload }) => {
          if (payload.type === 'bun') {
             state.constructorIngredients = state.constructorIngredients.filter(ingr => ingr.type !== 'bun')
          } else {
@@ -75,7 +75,7 @@ export const ingredientSlice = createSlice({
          .addCase(fetchIngredients.pending, state => {
             state.loading = true
          })
-         .addCase(fetchIngredients.fulfilled, (state, { payload }: { payload: { data: TIngredient[]}}) => {
+         .addCase(fetchIngredients.fulfilled, (state, { payload }) => {
             state.loading = false
             state.error = ''
             state.ingredients = payload.data
@@ -89,7 +89,7 @@ export const ingredientSlice = createSlice({
          .addCase(postFinalResult.pending, state => {
             state.orderLoading = true
          } )
-         .addCase(postFinalResult.fulfilled, (state, { payload }: {payload: {order:{number:number}}}) => {
+         .addCase(postFinalResult.fulfilled, (state, { payload }) => {
             // state.orderModal = true
             state.orderLoading = false
             state.orderError = ''

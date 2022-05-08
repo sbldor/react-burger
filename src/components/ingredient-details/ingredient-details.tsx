@@ -11,7 +11,7 @@ const IngredientDetails = () => {
    const { ingredientId } = useParams<{ingredientId:string}>()
 
    const currentIngr = useMemo<TIngredient>(
-      () => ingredients.find((item: TIngredient) => item._id === ingredientId),
+      () => ingredients.find((item) => item._id === ingredientId),
    [ingredients, ingredientId])
    
    return(

@@ -26,13 +26,13 @@ const FeedDetals = () => {
    }, [ingredients, feed]);
 
    useEffect(() => {
-      const activeOrder: TOrder = feed.find((item: TOrder) => item._id === id);
+      const activeOrder: TOrder = feed.find((item) => item._id === id);
       if (!data && ingredients && activeOrder) {
          setData(activeOrder);
          let ingredientsArray: TIngredient[] = [];
 
          activeOrder.ingredients.forEach((element) => {
-            let ingr = ingredients.find((item: TIngredient) => item._id === element);
+            let ingr = ingredients.find((item) => item._id === element);
             if (ingr) {
                ingredientsArray.push({ ...ingr, count: 1 });
             }
@@ -45,7 +45,7 @@ const FeedDetals = () => {
 
          const ingredientsCounted: TIngredient[] = [];
          ingredientsArray.forEach((element) => {
-            const ingr: TIngredient = ingredientsCounted.find((i: TIngredient) => i._id === element._id);
+            const ingr = ingredientsCounted.find((i) => i._id === element._id);
             if (ingr) {
                if (ingr.count) ingr.count += 1;
             } else {

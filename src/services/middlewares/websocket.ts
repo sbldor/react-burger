@@ -1,8 +1,9 @@
 import { wsActions } from '../slices/feed-ws-slice';
-import { AnyAction } from 'redux'
+import { AnyAction, MiddlewareAPI } from 'redux';
+//import { AppDispatch, TRootState } from '..';
 
 export const wsMiddleware = (Actions: typeof wsActions) => {
-   return (store: { dispatch: any}) => {
+   return (store: MiddlewareAPI) => {
 
       let socket: null | WebSocket = null;
 

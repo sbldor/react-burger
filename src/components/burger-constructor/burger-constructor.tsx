@@ -15,8 +15,8 @@ const BurgerConstructor: FC = () => {
    
    const dispatch = useAppDispatch();
    const { constructorIngredients } = useAppSelector(ingredientsSelector);
-   const middleIngredients: TIngredient[] = constructorIngredients.filter((ingr: TIngredient) => ingr.type !== 'bun');
-   const bun: TIngredient[] = constructorIngredients.filter((ingr: TIngredient) => ingr.type === 'bun');
+   const middleIngredients: TIngredient[] = constructorIngredients.filter((ingr) => ingr.type !== 'bun');
+   const bun: TIngredient[] = constructorIngredients.filter((ingr) => ingr.type === 'bun');
 
    const [{ isOver }, dropTarget] = useDrop({
       accept: 'ingredient',
@@ -62,7 +62,7 @@ const BurgerConstructor: FC = () => {
                {(middleIngredients.length === 0) &&
                   <span className='text text_type_main-medium mt-4'> А теперь остальное)  если захочешь пменять булочку, ты можешь сделать это в любой момент, просто перетащи новую) </span>}
                
-               {middleIngredients.length >= 1 && middleIngredients.map((ingr: TIngredient , index: number) => (
+               {middleIngredients.length >= 1 && middleIngredients.map((ingr, index) => (
                   <IngredientConstructor item={ingr} index={index} key={ingr.id} />
                )
                )}
