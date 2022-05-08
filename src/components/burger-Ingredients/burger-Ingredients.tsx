@@ -1,34 +1,35 @@
-import React, { useRef } from 'react';
+import React, { useRef, FC, MutableRefObject } from 'react';
 import style from './burger-Ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsTab from '../ingrtdient-tab/ingredient-tab';
-import { useSelector } from 'react-redux'
-import { ingredientsSelector } from '../../services/slices/ingredients-slice'
+import { useAppSelector } from '../../services';
+import { ingredientsSelector } from '../../services/slices/ingredients-slice';
+import { TIngredient } from '../../utils/types';
 
+const BurgerIngredients: FC = () => {
 
+   const { ingredients } = useAppSelector(ingredientsSelector)
+   const [current, setCurrent] = React.useState<string>('bun')
 
-const BurgerIngredients = () => {
+   const scrollRef = useRef<HTMLDivElement>(null);
 
-   const { ingredients } = useSelector(ingredientsSelector)
-   const [current, setCurrent] = React.useState('bun')
-   const scrollRef = useRef(null);
-   const mainRef = useRef(null);
-   const sauceRef = useRef(null);
-   const bunRef = useRef(null);
+   const mainRef = useRef<HTMLDivElement>(null);
+   const sauceRef = useRef<HTMLDivElement>(null);
+   const bunRef = useRef<HTMLDivElement>(null);
 
-   const handleTabClick = (evt, ref) => {
+   const handleTabClick = (evt: string, ref: MutableRefObject<HTMLDivElement>) => {
       setCurrent(evt)
       ref.current.scrollIntoView({ behavior: 'smooth' })
    }
 
-   const findIngredients = (ingredientsType) => ingredients.filter(ingr => ingr.type === ingredientsType);
+   const findIngredients = (ingredientsType: string) => ingredients.filter((ingr: TIngredient) => ingr.type === ingredientsType);
 
    const handleScroll = () => {
-      const scrollPosition = scrollRef.current.getBoundingClientRect().top
+      const scrollPosition: number = scrollRef.current.getBoundingClientRect().top
 
-      const bunCheck = Math.abs(scrollPosition - bunRef.current.getBoundingClientRect().top)
-      const sauceCheck = Math.abs(scrollPosition - sauceRef.current.getBoundingClientRect().top)
-      const maindCheck = Math.abs(scrollPosition - mainRef.current.getBoundingClientRect().top)
+      const bunCheck: number = Math.abs(scrollPosition - bunRef.current.getBoundingClientRect().top)
+      const sauceCheck: number = Math.abs(scrollPosition - sauceRef.current.getBoundingClientRect().top)
+      const maindCheck: number = Math.abs(scrollPosition - mainRef.current.getBoundingClientRect().top)
 
       if (bunCheck < sauceCheck) {
          setCurrent('bun')

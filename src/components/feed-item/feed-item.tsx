@@ -4,28 +4,33 @@ import { getData, getStatusOrder } from '../../utils/constants';
 import { ingredientsSelector } from '../../services/slices/ingredients-slice';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation } from 'react-router-dom';
-import PropTypes from "prop-types";
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../services';
 import { nanoid } from "@reduxjs/toolkit";
+import { FC } from "react";
+import { TOrder, TIngredient, TLocation } from "../../utils/types";
 
-const FeedItem = ({feed}) => {
-   const { ingredients } = useSelector(ingredientsSelector)
-   const location = useLocation()
+interface IFeedItem {
+   feed: TOrder
+}
 
-   let ingrFeed = []
+const FeedItem: FC<IFeedItem> = ({feed}) => {
+   const { ingredients } = useAppSelector(ingredientsSelector)
+   const location = useLocation<TLocation>()
+
+   let ingrFeed: TIngredient[] = []
 
    feed.ingredients.forEach(item => {
       if (item !== null)
-      ingrFeed.push(ingredients.find((el) => el._id === item));
+      ingrFeed.push(ingredients.find((el: TIngredient) => el._id === item));
    });
 
-   const finalTotal = React.useMemo(
-      () => ingrFeed.length !== 0 ? ingrFeed.reduce((sum, item) => sum + item.price, 0) : 0, [ingrFeed]
+   const finalTotal: number = React.useMemo(
+      () => ingrFeed.length !== 0 ? ingrFeed.reduce((sum: number, item: TIngredient) => sum + item.price, 0) : 0, [ingrFeed]
    ) 
 
-   let ingrs = ingrFeed.length > 5 ? ingrFeed.slice(0, 5).reverse() : ingrFeed
-   let lastIngrs = ingrFeed.slice(5, 6).reverse()
-   let countLotsOfIngrs = ingrFeed.slice(5).length
+   let ingrs: TIngredient[] = ingrFeed.length > 5 ? ingrFeed.slice(0, 5).reverse() : ingrFeed
+   let lastIngrs: TIngredient[] = ingrFeed.slice(5, 6).reverse()
+   let countLotsOfIngrs: number = ingrFeed.slice(5).length
 
    return (
       <Link to={{ pathname: `${location.pathname}/${feed._id}`, state: { background: location } }} className={`${style.feed} p-6 mb-4 mr-2`}>
@@ -47,7 +52,7 @@ const FeedItem = ({feed}) => {
                      <img className={style.order_image_all} src={lastIngrs[0].image_mobile} alt={lastIngrs[0].name} />
                   </div>
                }
-               {ingrs && ingrs.map((i) => {
+               {ingrs && ingrs.map((i: TIngredient) => {
                   return <img className={style.order_image} src={i.image_mobile} alt='1' key={nanoid()} />
                })}
             </div>
@@ -59,9 +64,5 @@ const FeedItem = ({feed}) => {
       </Link>
    )
 }
-
-FeedItem.propTypes = {
-   feed: PropTypes.object.isRequired,
-};
 
 export default FeedItem

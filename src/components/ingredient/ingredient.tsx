@@ -1,19 +1,24 @@
 import { useDrag } from 'react-dnd';
 import style from './ingredient.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../services';
 import { showIngredientDetails, ingredientsSelector } from '../../services/slices/ingredients-slice';
-import PropTypes from 'prop-types';
-import ingredients from '../../utils/prop-types';
-import { Link, useLocation } from 'react-router-dom'
+import { FC } from 'react';
+import { TLocation, TIngredient } from '../../utils/types';
+import { Link, useLocation } from 'react-router-dom';
 
-const Ingredient = ({ingr}) => {
+interface IIngredirnt {
+   ingr: TIngredient
+}
 
-   const { constructorIngredients } = useSelector(ingredientsSelector)
-   const dispatch = useDispatch()
-   const location = useLocation()
+const Ingredient: FC<IIngredirnt> = ({ingr}) => {
 
-   const count = constructorIngredients.filter(i => i._id === ingr._id).length
+   const { constructorIngredients } = useAppSelector(ingredientsSelector);
+   const dispatch = useAppDispatch();
+   const location = useLocation<TLocation>();
+
+   const count: number = constructorIngredients.filter((i: TIngredient) => i._id === ingr._id).length;
+
    const [{ isDrag }, dragRef] = useDrag({
       type: 'ingredient',
       item: () => ({ ingr }),
@@ -22,7 +27,7 @@ const Ingredient = ({ingr}) => {
       })
    })
 
-   const styles = {
+   const styles: { boxShadow: string, borderRadius: number} = {
       boxShadow: isDrag ? 'inset 0 0 5px 1px #4C4CFF' : 'none',
       borderRadius: 10
    }
@@ -42,8 +47,5 @@ const Ingredient = ({ingr}) => {
    )
 }
 
-Ingredient.propTypes = {
-   ingr: ingredients.isRequired
-}
 
 export default Ingredient

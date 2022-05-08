@@ -1,13 +1,10 @@
-import { Route } from 'react-router-dom'
-import { Redirect, useLocation } from 'react-router-dom'
-import { authSelector } from '../../services/slices/auth-slice'
-import { useSelector } from 'react-redux'
+import { Route, Redirect, useLocation, RouteProps } from 'react-router-dom'
 import { getCookie } from "../../utils/cookies";
+import { FC } from 'react';
 
 
-const ProtectRoute = ({ children, ...rest }) => {
+const ProtectRoute: FC<RouteProps> = ({ children, ...rest }) => {
 
-   const { auth } = useSelector(authSelector)
    const location = useLocation();
    return (
       <Route

@@ -1,7 +1,8 @@
-import style from './page-not-found.module.css'
-import { Link } from 'react-router-dom'
+import style from './page-not-found.module.css';
+import { Link } from 'react-router-dom';
+import { FC } from 'react';
 
-const PageNotFound = () => {
+const PageNotFound: FC = () => {
    return (
       <div className={style.main}>
          <span className="text_type_main-large">Ошибка 404 - страницу не удалось найти</span>

@@ -3,22 +3,24 @@ import style from './final-result.module.css';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../services';
 import { postFinalResult, closeOrderModal, openOrderModal, ingredientsSelector } from '../../services/slices/ingredients-slice';
-import { useHistory } from 'react-router-dom'
-import { authSelector } from '../../services/slices/auth-slice'
+import { useHistory } from 'react-router-dom';
+import { authSelector } from '../../services/slices/auth-slice';
+import { FC } from 'react';
+import { TIngredient } from '../../utils/types';
 
-const FinalResult = () => {
+const FinalResult: FC = () => {
 
-   const { order, orderModal, constructorIngredients } = useSelector(ingredientsSelector)
-   const { auth } = useSelector(authSelector)
+   const { order, orderModal, constructorIngredients } = useAppSelector(ingredientsSelector)
+   const { auth } = useAppSelector(authSelector)
    const history = useHistory()
-   const dispatch = useDispatch()
+   const dispatch = useAppDispatch()
 
-   const finalTotal = React.useMemo(
+   const finalTotal: number = React.useMemo(
       () => {
-         const total = constructorIngredients.filter(ingr => ingr.type !== 'bun').reduce((sum, it) => sum + it.price, 0);
-         const totalBun = constructorIngredients.some(ingr => ingr.type === 'bun') ? constructorIngredients.find(ingr => ingr.type === 'bun').price : 0
+         const total = constructorIngredients.filter((ingr: TIngredient) => ingr.type !== 'bun').reduce((sum: number, it: TIngredient) => sum + it.price, 0);
+         const totalBun = constructorIngredients.some((ingr: TIngredient) => ingr.type === 'bun') ? constructorIngredients.find((ingr: TIngredient) => ingr.type === 'bun').price : 0
          return total + totalBun;
       },
       [constructorIngredients]
@@ -27,7 +29,6 @@ const FinalResult = () => {
    const addOrder = () => {
       if (auth) {
          dispatch(openOrderModal())
-         //@ts-ignore
          dispatch(postFinalResult(constructorIngredients))
       } else { 
          history.replace({ pathname: '/login' })
@@ -51,7 +52,6 @@ const FinalResult = () => {
 
       {orderModal && 
       <>
-         {/* @ts-ignore */}
          <Modal onToggle={() =>  dispatch(closeOrderModal()) }>
             <OrderDetails number={order} />
          </Modal>

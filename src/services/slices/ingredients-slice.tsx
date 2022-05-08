@@ -1,6 +1,20 @@
-import { createSlice, createAsyncThunk, nanoid } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { baseUrl, resCheck } from '../../utils/api';
-import { getCookie } from '../../utils/cookies'
+import { getCookie } from '../../utils/cookies';
+import { TRootState } from '../index';
+import { TIngredient } from '../../utils/types';
+
+type TInitialState = {
+   ingredients: TIngredient[],
+   constructorIngredients: TIngredient[],
+   ingredientDetailsModal: boolean,
+   orderModal: boolean,
+   order: number,
+   error: string,
+   orderError: string,
+   loading: boolean,
+   orderLoading: boolean
+}
 
 export const initialState = {
    ingredients: [],
@@ -12,7 +26,7 @@ export const initialState = {
    orderError: '',
    loading: false,
    orderLoading:false
-}
+} as TInitialState
 
 export const ingredientSlice = createSlice({
    name: 'ingredients',
@@ -32,7 +46,7 @@ export const ingredientSlice = createSlice({
          state.orderModal = true
       },
 
-      addIngredientToConstructor: ( state, { payload }) => {
+      addIngredientToConstructor: ( state, { payload }: PayloadAction<TIngredient>) => {
          if (payload.type !== 'bun' && state.constructorIngredients.length === 0) {
                state.constructorIngredients = []
             } else {
@@ -41,7 +55,7 @@ export const ingredientSlice = createSlice({
             }
       },
 
-      deleteIngredientFromConstructor: (state, { payload }) => {
+      deleteIngredientFromConstructor: (state, { payload }: PayloadAction<TIngredient>) => {
          if (payload.type === 'bun') {
             state.constructorIngredients = state.constructorIngredients.filter(ingr => ingr.type !== 'bun')
          } else {
@@ -49,8 +63,7 @@ export const ingredientSlice = createSlice({
          }
       },
 
-      dragIngredients: (state, { payload }) => {
-         console.log('slice >' + payload.drag)
+      dragIngredients: (state, { payload }: {payload: {drag: number, hover: number}}) => {
          const ingredientsToChange = state.constructorIngredients.filter(i => i.type !== 'bun')
          ingredientsToChange[payload.drag] = ingredientsToChange.splice(payload.hover,1, ingredientsToChange[payload.drag])[0]
          state.constructorIngredients = ingredientsToChange.concat(state.constructorIngredients.filter(i => i.type === 'bun'))
@@ -62,7 +75,7 @@ export const ingredientSlice = createSlice({
          .addCase(fetchIngredients.pending, state => {
             state.loading = true
          })
-         .addCase(fetchIngredients.fulfilled, (state, { payload }) => {
+         .addCase(fetchIngredients.fulfilled, (state, { payload }: { payload: { data: TIngredient[]}}) => {
             state.loading = false
             state.error = ''
             state.ingredients = payload.data
@@ -76,7 +89,7 @@ export const ingredientSlice = createSlice({
          .addCase(postFinalResult.pending, state => {
             state.orderLoading = true
          } )
-         .addCase(postFinalResult.fulfilled, (state, { payload }) => {
+         .addCase(postFinalResult.fulfilled, (state, { payload }: {payload: {order:{number:number}}}) => {
             // state.orderModal = true
             state.orderLoading = false
             state.orderError = ''
@@ -102,7 +115,7 @@ export const {
 } = ingredientSlice.actions;
 
 export const ingredientsReducer = ingredientSlice.reducer;
-export const ingredientsSelector = state => state.ingredients;
+export const ingredientsSelector = (state: TRootState) => state.ingredients;
 
 export const fetchIngredients = createAsyncThunk(
    'ingredients/fetchIngredients',
@@ -119,13 +132,12 @@ export const fetchIngredients = createAsyncThunk(
 
 export const postFinalResult = createAsyncThunk(
    'ingredients/postFinalResult',
-   async (ingredients, { rejectWithValue }) => {
+   async (ingredients: TIngredient[], { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + `${'orders'}`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json',
             authorization: getCookie("accessToken")},
-            // @ts-ignore
             body: JSON.stringify({ ingredients: ingredients.map(ingr => ingr._id) })
          })
          const result = await resCheck(res)

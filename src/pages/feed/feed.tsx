@@ -1,19 +1,19 @@
 import style from './feed.module.css'
 import Orders from '../../components/orders/orders';
 import FeedInfo from '../../components/feed-info/feed-info';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../services';
 import { wsSelector } from "../../services/slices/feed-ws-slice";
 import { wsUrl } from '../../utils/api';
 import { wsClose, wsStart } from "../../services/slices/feed-ws-slice";
 import { useEffect } from "react";
 import Loader from '../../components/loader/loader';
+import { FC } from 'react';
 
 
+const Feed: FC = () => {
 
-const Feed = () => {
-
-   const dispatch = useDispatch();
-   const { feed } = useSelector(wsSelector);
+   const dispatch = useAppDispatch();
+   const { feed } = useAppSelector(wsSelector);
 
    useEffect(() => {
       dispatch(wsStart({ url: `${wsUrl}/all` }));

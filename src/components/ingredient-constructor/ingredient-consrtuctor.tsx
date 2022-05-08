@@ -1,54 +1,61 @@
-
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../services';
 import { deleteIngredientFromConstructor, dragIngredients } from '../../services/slices/ingredients-slice';
-import { useDrag, useDrop } from 'react-dnd';
+import { useDrag, useDrop, DropTargetMonitor, DragSourceMonitor, XYCoord } from 'react-dnd';
 import { useRef } from 'react';
 import style from '../ingredient-constructor/ingredient-constructor.module.css';
-import PropTypes from 'prop-types'
+import { TIngredient } from '../../utils/types'
+import { FC } from 'react'
 
-const IngredientConstructor = ({ item, index }) => {
 
-   const dispatch = useDispatch()
-   const ref = useRef(null)
+interface IIngredientConstructor  {
+   readonly item: TIngredient,
+   readonly index: number,
+};
+
+const IngredientConstructor: FC<IIngredientConstructor> = ({ item, index }) => {
+
+   const dispatch = useAppDispatch()
+   const ref = useRef<HTMLLIElement>(null)
 
    const [{ isDragging }, drag] = useDrag({
       type: 'cartIngredient',
       item: () => ({ item, index }),
-      collect: (monitor) => ({ isDragging: monitor.isDragging() })
+      collect: (monitor: DragSourceMonitor) => ({ isDragging: monitor.isDragging() })
    })
-   // @ts-ignore
+
    const [{ handlerId }, drop] = useDrop({
       accept: 'cartIngredient',
-      drop: item => {
-         // @ts-ignore
-         const dragIndex = item.index;
-         const hoverIndex = index;
-         if(dragIndex== hoverIndex) return;
+      collect: (monitor: DropTargetMonitor) => ({ handlerId: monitor.getHandlerId() }),
+      drop: (item: TIngredient ) => {
+         const dragIndex: number = item.index;
+         const hoverIndex: number = index;
+         if(dragIndex === hoverIndex) return;
          dispatch(dragIngredients({ drag: dragIndex, hover: hoverIndex }))
       },
-      hover: (item, monitor) => {
+      hover: (item: TIngredient, monitor: DropTargetMonitor) => {
          if (!ref.current) return
-         // @ts-ignore
-         const dragIndex = item.index
-         const hoverIndex = index
+
+         const dragIndex: number = item.index
+         const hoverIndex: number = index
 
          if (dragIndex === hoverIndex) return
 
-         const hoverBoundingRect = ref.current?.getBoundingClientRect()
-         const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-         const clientOffset = monitor.getClientOffset()
-         const hoverClientY = clientOffset.y - hoverBoundingRect.top
+         const hoverBoundingRect: DOMRect = ref.current?.getBoundingClientRect()
+         const hoverMiddleY: number = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+         const clientOffset: XYCoord = monitor.getClientOffset()
+         const hoverClientY: number = clientOffset.y - hoverBoundingRect.top
          if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return
          if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return
 
          dispatch(dragIngredients({ drag: dragIndex, hover: hoverIndex }))
-         // @ts-ignore
+
          item.index = hoverIndex
       }
    })
 
-   const opacity = { opacity: isDragging ? 0 : 1 }
+   const opacity: { opacity: number} = { opacity: isDragging ? 0 : 1 }
+
    drag(drop(ref))
 
    return (
@@ -66,11 +73,5 @@ const IngredientConstructor = ({ item, index }) => {
       </li>
    )
 }
-
-IngredientConstructor.propTypes = {
-   index: PropTypes.number,
-   item: PropTypes.object
-}
-
 
 export default IngredientConstructor

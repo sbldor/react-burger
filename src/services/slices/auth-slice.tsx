@@ -1,6 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { TRootState } from '..';
 import { baseUrl, resCheck } from '../../utils/api'
 import { getCookie, setCookie, deleteCookie } from '../../utils/cookies';
+import { TUserData, TLoginData, TRegistrData, TResetData } from '../../utils/types';
+
+type TInitialState = {
+   auth: boolean,
+   loading: boolean,
+   error: string,
+   userData: {
+      email: string,
+      password: string,
+      name: string,
+   },
+   forgotPass: boolean,
+   resetPass: boolean,
+}
 
 export const initialState = {
    auth: false,
@@ -13,14 +28,14 @@ export const initialState = {
    },
    forgotPass: false,
    resetPass: false,
-}
+} as TInitialState
 
 const authSlice = createSlice({
    name: 'aurh',
    initialState,
    reducers: {
       checkAuth: state => { 
-         getCookie('refreshToken') ? getToken() : state.auth = false
+         localStorage.getItem('refreshToken') ? getToken() : state.auth = false
       },
       resetError: state => { 
          state.error = '' 
@@ -182,12 +197,12 @@ export const {
    resetResetPass
 } = authSlice.actions
 
-export const authSelector = state => state.auth
+export const authSelector = (state: TRootState) => state.auth
 export const authReducer = authSlice.reducer
 
 export const registerUser = createAsyncThunk(
    'auth/registerUser',
-   async (form, { rejectWithValue }) => {
+   async (form: TRegistrData, { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + 'auth/register', {
             method: 'POST',
@@ -205,7 +220,7 @@ export const registerUser = createAsyncThunk(
 export const forgotPassword = createAsyncThunk(
    'auth/forgotPassword',
    // @ts-ignore
-   async (email, { rejectWithValue }) => {
+   async (email: string, { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + 'password-reset', {
             method: 'POST',
@@ -223,7 +238,7 @@ export const forgotPassword = createAsyncThunk(
 export const resetPassword = createAsyncThunk(
    'auth/resetPassword',
    // @ts-ignore
-   async (form, { rejectWithValue }) => {
+   async (form: TResetData, { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + 'password-reset/reset', {
             method: 'POST',
@@ -241,7 +256,7 @@ export const resetPassword = createAsyncThunk(
 export const loginRequest = createAsyncThunk(
    'auth/login',
    // @ts-ignore
-   async (form, { rejectWithValue }) => {
+   async (form: TLoginData, { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + 'auth/login', {
             method: 'POST',
@@ -299,7 +314,7 @@ export const getUser = createAsyncThunk(
 export const updateUser = createAsyncThunk(
    'auth/updateUser',
    // @ts-ignore
-   async (form, { rejectWithValue }) => {
+   async (form: TUserData, { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + 'auth/user', {
             method: 'PATCH',

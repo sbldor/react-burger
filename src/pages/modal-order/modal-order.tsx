@@ -1,21 +1,26 @@
 import style from "./modal-order.module.css";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../services";
 import { wsUrl } from "../../utils/api";
 import FeedDetals from '../../components/feed-detals/feed-detals'
 import { wsClose, wsStart } from "../../services/slices/feed-ws-slice";
 import { wsSelector } from "../../services/slices/feed-ws-slice";
 import { getCookie } from "../../utils/cookies";
+import { FC } from "react";
+import { TOrder } from "../../utils/types";
 
-const ModalOrder = ({status}) => {
+interface IModalOrder {
+   status: string
+}
 
-   const { feed } = useSelector(wsSelector);
-   const dispatch = useDispatch();
-   const { id } = useParams();
-   const [activeOrder, setActiveOrder] = useState([]);
+const ModalOrder: FC<IModalOrder> = ({status}) => {
+
+   const { feed } = useAppSelector(wsSelector);
+   const dispatch = useAppDispatch();
+   const { id } = useParams<{id:string}>();
+   const [activeOrder, setActiveOrder] = useState<TOrder>(null);
    const profileToken = getCookie("accessToken").slice(7);
-
 
    useEffect(() => {
       if (feed.length === 0 && status === 'orders') {
@@ -31,7 +36,7 @@ const ModalOrder = ({status}) => {
          };
       }
 
-      const currentOrder = feed.find((el) => el._id === id);
+      const currentOrder: TOrder = feed.find((el: TOrder) => el._id === id);
       if (currentOrder) setActiveOrder(currentOrder);
    }, [feed]);
 

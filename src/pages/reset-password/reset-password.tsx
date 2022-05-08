@@ -1,21 +1,23 @@
-import { Redirect, Link, useHistory, useLocation } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Redirect, Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../services';
+import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from '../form.module.css';
-import { resetError, resetPassword, authSelector } from '../../services/slices/auth-slice'
+import { resetError, resetPassword, authSelector } from '../../services/slices/auth-slice';
+import { FC } from 'react';
+import { TLocation, TResetData } from '../../utils/types';
 
-const ResetPassword = () => {
+const ResetPassword: FC = () => {
 
-   const dispatch = useDispatch()
-   const location = useLocation()
-   const { resetPass, error, auth, forgotPass } = useSelector(authSelector)
-   const [formData, addFormData] = useState({
+   const dispatch = useAppDispatch()
+   const location = useLocation<TLocation>()
+   const { resetPass, error, auth, forgotPass } = useAppSelector(authSelector)
+   const [formData, addFormData] = useState<TResetData>({
       password: '',
       token: ''
    })
 
-   const changeFormData = e => {
+   const changeFormData = (e: {target: {name: string, value: string}}) => {
       addFormData({
          ...formData,
          [e.target.name]: e.target.value
@@ -26,9 +28,8 @@ const ResetPassword = () => {
       dispatch(resetError())
    }
 
-   const sendForm = e => {
+   const sendForm = (e: { preventDefault: () => void}) => {
       e.preventDefault()
-      // @ts-ignore
       dispatch(resetPassword(formData))
    }
 

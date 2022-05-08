@@ -2,20 +2,20 @@ import style from './profile-feed.module.css'
 import { wsUrl } from "../../utils/api";
 import { wsClose, wsStart } from "../../services/slices/feed-ws-slice";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../services";
 import { getCookie } from "../../utils/cookies";
 import Loader from "../../components/loader/loader";
-import { ingredientsSelector } from "../../services/slices/ingredients-slice";
 import Orders from '../orders/orders';
 import { wsSelector } from "../../services/slices/feed-ws-slice";
+import { FC } from 'react';
+import { TOrder } from '../../utils/types';
 
-const ProfileOrders = () => {
-   const dispatch = useDispatch();
-   const { loading } = useSelector(ingredientsSelector);
+const ProfileOrders: FC = () => {
+   const dispatch = useAppDispatch();
    const profileToken = getCookie("accessToken").slice(7);
-   const { feed } = useSelector(wsSelector);
+   const { feed } = useAppSelector(wsSelector);
 
-   let reversedFeed = [];
+   let reversedFeed: TOrder[] = [];
 
    if (feed.length > 0) {
       reversedFeed = [...feed].reverse();

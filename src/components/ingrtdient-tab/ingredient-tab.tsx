@@ -1,17 +1,21 @@
-
 import style from './ingredient-tab.module.css';
-import PropTypes from 'prop-types';
-import Ingredients from "../../utils/prop-types";
 import Ingredient from '../ingredient/ingredient';
+import { TIngredient } from '../../utils/types';
+import { FC, MutableRefObject } from 'react'
 
-const IngredientsTab = (props) => {
+interface IIngredientsTab {
+   tabRef: MutableRefObject<HTMLDivElement>,
+   name: string,
+   ingredients: TIngredient[]
+}
+
+const IngredientsTab: FC<IIngredientsTab> = ({tabRef, name, ingredients}) => {
+
    return (
-
-
-      <section ref={props.tabRef}>
-         <h2 className={'text text_type_main-medium'}>{props.name}</h2>
+      <section ref={tabRef}>
+         <h2 className={'text text_type_main-medium'}>{name}</h2>
          <ul className={`${style.products} mb-10 ml-4 mr-1`}>
-            {props.ingredients.map(ingr => {
+            {ingredients.map((ingr: TIngredient) => {
                return ( 
                   <Ingredient ingr={ingr} key={ingr._id} />
                   )
@@ -20,15 +24,6 @@ const IngredientsTab = (props) => {
          </ul>
       </section>
    )
-}
-
-IngredientsTab.propTypes = {
-   name: PropTypes.string.isRequired,
-   ingredients: PropTypes.arrayOf(Ingredients).isRequired,
-   tabRef: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.shape({ current: PropTypes.any })
-   ])
 }
 
 export default IngredientsTab

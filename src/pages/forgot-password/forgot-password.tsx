@@ -1,19 +1,20 @@
-import { Redirect, Link, useLocation } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Redirect, Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from '../form.module.css';
-import { useDispatch, useSelector } from 'react-redux'
-import { forgotPassword, authSelector } from '../../services/slices/auth-slice'
+import { useAppDispatch, useAppSelector } from '../../services';
+import { forgotPassword, authSelector } from '../../services/slices/auth-slice';
+import { FC } from 'react';
+import { TLocation } from '../../utils/types';
 
-const ForgotPassword = () => {
-   const dispatch = useDispatch()
-   const { forgotPass, auth } = useSelector(authSelector)
-   const location = useLocation()
-   const [email, addEmail] = useState('')
+const ForgotPassword: FC = () => {
+   const dispatch = useAppDispatch()
+   const { forgotPass, auth } = useAppSelector(authSelector)
+   const location = useLocation<TLocation>()
+   const [email, addEmail] = useState<string>('')
 
-   const sendForm = e => {
+   const sendForm = (e: { preventDefault: ()=> void}) => {
       e.preventDefault()
-      // @ts-ignore
       dispatch(forgotPassword(email))
    }
 

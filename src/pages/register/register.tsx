@@ -1,22 +1,25 @@
-import { Link, useHistory, useLocation, Redirect } from 'react-router-dom'
+import { Link, useLocation, Redirect } from 'react-router-dom';
 import { useState } from 'react';
-import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from '../form.module.css';
-import { registerUser, authSelector, resetError } from '../../services/slices/auth-slice'
-import { useDispatch, useSelector } from 'react-redux'
+import { registerUser, authSelector, resetError } from '../../services/slices/auth-slice';
+import { useAppDispatch, useAppSelector } from '../../services';
+import { FC } from 'react';
+import { TLocation, TRegistrData } from '../../utils/types';
 
-const Register = () => {
 
-   const { error, auth } = useSelector(authSelector)
-   const dispatch = useDispatch()
-   const location = useLocation()
-   const [formData, setFormData] = useState({
+const Register: FC = () => {
+
+   const { error, auth } = useAppSelector(authSelector)
+   const dispatch = useAppDispatch()
+   const location = useLocation<TLocation>()
+   const [formData, setFormData] = useState<TRegistrData>({
       name: '',
       email: '',
       password: ''
    });
 
-   const changeFormData = e => {
+   const changeFormData = (e: {target: {name:string, value: string}}) => {
       setFormData({
          ...formData,
          [e.target.name]: e.target.value
@@ -27,9 +30,8 @@ const Register = () => {
       dispatch(resetError())
    }
 
-   const register = e => {
+   const register = (e: { preventDefault: () => void}) => {
       e.preventDefault()
-      // @ts-ignore
       dispatch(registerUser(formData))
    }
 

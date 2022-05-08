@@ -2,31 +2,29 @@ import style from './burger-constructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import FinalResult from "../final-result/final-result";
 import IngredientConstructor from '../ingredient-constructor/ingredient-consrtuctor';
-import { useSelector, useDispatch} from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../services';
 import { ingredientsSelector,
          addIngredientToConstructor,
          deleteIngredientFromConstructor 
       } from '../../services/slices/ingredients-slice';
 import { useDrop } from 'react-dnd';
+import { FC } from 'react'
+import { TIngredient } from '../../utils/types';
 
-const BurgerConstructor = () => {
+const BurgerConstructor: FC = () => {
    
-   const dispatch = useDispatch();
-   const { constructorIngredients } = useSelector(ingredientsSelector);
-   const middleIngredients = constructorIngredients.filter(ingr => ingr.type !== 'bun');
-   const bun = constructorIngredients.filter(ingr => ingr.type === 'bun');
+   const dispatch = useAppDispatch();
+   const { constructorIngredients } = useAppSelector(ingredientsSelector);
+   const middleIngredients: TIngredient[] = constructorIngredients.filter((ingr: TIngredient) => ingr.type !== 'bun');
+   const bun: TIngredient[] = constructorIngredients.filter((ingr: TIngredient) => ingr.type === 'bun');
 
    const [{ isOver }, dropTarget] = useDrop({
       accept: 'ingredient',
-      drop: (item) => {
-         // @ts-ignore
+      drop: (item: {ingr: TIngredient}) => {
          if (item.ingr.type === 'bun') {
-            // @ts-ignore
             dispatch(deleteIngredientFromConstructor(item.ingr))
-            // @ts-ignore
             dispatch(addIngredientToConstructor(item.ingr))
          } else {
-            // @ts-ignore
             dispatch(addIngredientToConstructor(item.ingr))
          }
       },
@@ -35,7 +33,7 @@ const BurgerConstructor = () => {
       })
    })
    
-   const styles = {
+   const styles: { outline: string, borderRadius: number | string } = {
       outline: isOver ? '2px solid #4C4CFF' : 'none',
       borderRadius: isOver ? 10 : 'none',
    }
@@ -64,8 +62,7 @@ const BurgerConstructor = () => {
                {(middleIngredients.length === 0) &&
                   <span className='text text_type_main-medium mt-4'> А теперь остальное)  если захочешь пменять булочку, ты можешь сделать это в любой момент, просто перетащи новую) </span>}
                
-               {middleIngredients.length >= 1 && middleIngredients.map((ingr, index) => (
-                  // @ts-ignore
+               {middleIngredients.length >= 1 && middleIngredients.map((ingr: TIngredient , index: number) => (
                   <IngredientConstructor item={ingr} index={index} key={ingr.id} />
                )
                )}

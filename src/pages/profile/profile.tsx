@@ -4,17 +4,16 @@ import ProfileNavigation from '../../components/profile-nav/profile-nav'
 import ProfileInfo from '../../components/profile-info/profile-info'
 import ProfileOrders from '../../components/profile-feed/profile-feed'
 import ModalOrder from '../modal-order/modal-order'
-import { useSelector } from "react-redux";
-import { wsSelector } from "../../services/slices/feed-ws-slice";
+import { FC } from 'react'
+import { TLocation } from '../../utils/types'
 
-
-const Profile = () => {
+const Profile: FC = () => {
    
-   const location = useLocation()
-   const path = location.pathname
-   const className = path === '/profile' || path === '/profile/orders' ? styles.main : null
+   const location = useLocation<TLocation>()
+   const path: string = location.pathname
+   const className: null | string = path === '/profile' || path === '/profile/orders' ? styles.main : null
 
-   const status = 'profile'
+   const status: string = 'profile'
 
    return (
       <div className={className}>

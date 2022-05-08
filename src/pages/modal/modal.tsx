@@ -1,16 +1,17 @@
-import style from './modal.module.css'
-import IngredientDetails from '../../components/ingredient-details/ingredient-details'
-import { useSelector } from 'react-redux'
-import { useParams, useLocation } from 'react-router-dom'
-import { ingredientsSelector } from '../../services/slices/ingredients-slice'
+import style from './modal.module.css';
+import IngredientDetails from '../../components/ingredient-details/ingredient-details';
+import { useAppSelector } from '../../services';
+import { useParams } from 'react-router-dom';
+import { ingredientsSelector } from '../../services/slices/ingredients-slice';
+import { FC } from 'react';
+import { TIngredient } from '../../utils/types';
 
-const IngredientModalPage = () => {
+const IngredientModalPage: FC = () => {
 
-   const { ingredientId } = useParams()
-   const { loading, ingredients } = useSelector(ingredientsSelector)
-   const currentIngr =  ingredients.find(ingr => ingr._id === ingredientId)
-   const location = useLocation
-
+   const { ingredientId } = useParams<{ ingredientId: string}>()
+   const { loading, ingredients } = useAppSelector(ingredientsSelector)
+   const currentIngr =  ingredients.find((ingr: TIngredient) => ingr._id === ingredientId)
+   
    return (
       <>
          {currentIngr && !loading && 

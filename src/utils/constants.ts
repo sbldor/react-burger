@@ -1,7 +1,7 @@
 import { formatRelative } from "date-fns";
 import { ru } from "date-fns/locale";
 
-export const getData = (date) => {
+export const getData = (date: string) => {
    const dateRelative = formatRelative(new Date(date), new Date(), {
       locale: ru,
    });
@@ -9,7 +9,7 @@ export const getData = (date) => {
 };
 
 
-export const getStatusOrder = status => {
+export const getStatusOrder = (status: string) => {
    switch (status) {
       case 'done':
          return 'Выполнен'

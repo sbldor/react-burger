@@ -1,11 +1,12 @@
 import style from './profile-nav.module.css'
 import { NavLink } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../../services'
 import { logoutRequest } from '../../services/slices/auth-slice'
+import { FC } from 'react'
 
-const ProfileNav = () => {
+const ProfileNav: FC = () => {
 
-   const dispatch = useDispatch()
+   const dispatch = useAppDispatch()
 
    const onLogOut = () => {
       dispatch(logoutRequest());

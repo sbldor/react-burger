@@ -1,26 +1,28 @@
 import { useEffect } from 'react';
 import style from './app.module.css';
 import AppHeader from '../app-header/app-header';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../services';
 import { fetchIngredients } from '../../services/slices/ingredients-slice';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 import ProtectRoute from '../protect-route/protect-route';
-import { getUser, authSelector, getToken } from '../../services/slices/auth-slice';
-import { getCookie } from '../../utils/cookies';
+import { authSelector, getToken } from '../../services/slices/auth-slice';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { ingredientsSelector, removeIngredientDetails } from '../../services/slices/ingredients-slice'
+import { removeIngredientDetails } from '../../services/slices/ingredients-slice'
 import { Home, Login, Register, ForgotPassword, ResetPassword, PageNotFound, Profile, IngredientModalPage, Feed, ModalOrder } from '../../pages';
 import FeedDetals from '../feed-detals/feed-detals';
+import { TLocation } from '../../utils/types';
+
 const App = () => {
   
-  const dispatch = useDispatch()
-  const location = useLocation()
+  const dispatch = useAppDispatch()
+  const location = useLocation<TLocation>()
   const history = useHistory()
-  let background = location.state && location.state.background;
-  const { auth } = useSelector(authSelector)
+  const background = location.state && location.state.background;
+  const { auth } = useAppSelector(authSelector)
+  
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -29,12 +31,12 @@ const App = () => {
     }
   }, []);
 
-  const closeModal = () => {
+  const closeModal: () => void = () => {
     dispatch(removeIngredientDetails())
     history.goBack()
   }
 
-  const status = 'orders'
+  const status: string = 'orders'
   
   return (
       <div className={style.page}>

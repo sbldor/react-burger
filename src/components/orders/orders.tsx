@@ -1,8 +1,12 @@
-import style from "./orders.module.css";
 import FeedItem from "../feed-item/feed-item";
-import PropTypes from "prop-types";
+import { FC } from "react";
+import { TOrder } from "../../utils/types";
 
-const Orders = ({feed}) => {
+interface IOrders {
+   feed: TOrder[]
+}
+
+const Orders: FC<IOrders> = ({feed}) => {
    
    return (
       <>
@@ -12,9 +16,5 @@ const Orders = ({feed}) => {
       </>
       )
 }
-
-Orders.propTypes = {
-   feed: PropTypes.array.isRequired,
-};
 
 export default Orders

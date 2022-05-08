@@ -1,16 +1,21 @@
 import { createPortal } from "react-dom";
-import { useEffect, useState } from "react";
+import { useEffect, ReactNode } from "react";
 import style from './modal.module.css';
 import ModalOverlay from "../modal-overlay/modal-overlay";
-import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { FC } from 'react';
 
-const Modal = (props) => {
+interface IModal {
+   onToggle: (_?: boolean) => void;
+   children: ReactNode
+}
+
+const Modal: FC<IModal> = ({onToggle, children}) => {
 
    useEffect(()=>{
-      const closePopupOnEsc = e => {
+      const closePopupOnEsc = (e: KeyboardEvent) => {
          if (e.key === 'Escape') {
-            props.onToggle()
+            onToggle()
          }
       }
       document.addEventListener('keydown', closePopupOnEsc)
@@ -21,21 +26,16 @@ const Modal = (props) => {
 
    return createPortal (
       <>
-         <ModalOverlay {...props} />
+         <ModalOverlay onToggle={onToggle} />
          <div className={`pt-10 pr-10 pb-15 pl-10 ${style.container}`}>
-            <div className={style.close} onClick={() => props.onToggle()}>
+            <div className={style.close} onClick={() => onToggle()}>
                <CloseIcon type="primary"/>
             </div>
-            {props.children}
+            {children}
          </div>
          
       </>
    , document.getElementById('modals')!)
-}
-
-Modal.propTypes = {
-   onToggle: PropTypes.func.isRequired,
-   children: PropTypes.node.isRequired
 }
 
 export default Modal

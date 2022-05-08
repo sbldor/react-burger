@@ -1,22 +1,21 @@
-import style from './home.module.css'
-import BurgerIngredients from '../../components/burger-Ingredients/burger-Ingredients'
-import BurgerConstructor from '../../components/burger-constructor/burger-constructor'
+import style from './home.module.css';
+import BurgerIngredients from '../../components/burger-Ingredients/burger-Ingredients';
+import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
 import Error from '../../components/error/error';
 import Loader from '../../components/loader/loader';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../services';
 import { ingredientsSelector } from '../../services/slices/ingredients-slice';
+import { FC } from 'react';
 
+const Home: FC = () => {
 
-const Home = () => {
-
-   
-   const { loading, error, ingredients } = useSelector(ingredientsSelector)
+   const { loading, error } = useAppSelector(ingredientsSelector)
 
    return (
       <>
       { error && <Error error={error} />}
       { loading && <Loader /> }
-      {!error && !loading && ingredients.lenght !== 0 &&
+      {!error && !loading &&
          <main className={style.main}>
             <BurgerIngredients />
             <BurgerConstructor />

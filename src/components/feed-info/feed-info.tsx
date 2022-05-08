@@ -1,14 +1,20 @@
 import style from './feed-info.module.css';
 import { nanoid } from "@reduxjs/toolkit";
-import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../services";
 import { wsSelector } from "../../services/slices/feed-ws-slice";
+import { FC } from 'react';
+import { TOrder } from '../../utils/types';
 
-const FeedInfo = ({feed}) => {
+interface TFeedInfo {
+   feed: Array<TOrder>
+};
 
-   const { total, totalToday } = useSelector(wsSelector);
+const FeedInfo: FC<TFeedInfo> = ({feed}) => {
+
+   const { total, totalToday } = useAppSelector(wsSelector);
    let done = feed.filter((el) => el.status === "done");
    let pending = feed.filter((el) => el.status === "pending");
+
    return (
       <div className={style.container}>
          <div className={`${style.orders} mb-15 `}>
@@ -28,7 +34,7 @@ const FeedInfo = ({feed}) => {
                <div className={`${style.list} custom-scroll`}>
                   {feed &&
                      pending.map(i => (
-                        <p key={nanoid()} className={`${style.ready} text text_type_digits-default`}>{i.number}</p>
+                        <p key={nanoid()} className={`${style.job} text text_type_digits-default`}>{i.number}</p>
                      ))
                   }
                </div>
@@ -41,9 +47,5 @@ const FeedInfo = ({feed}) => {
       </div>
    )
 }
-
-FeedInfo.propTypes = {
-   feed: PropTypes.array.isRequired,
-};
 
 export default FeedInfo

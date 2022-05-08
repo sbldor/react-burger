@@ -1,13 +1,15 @@
-export const wsMiddleware = (wsActions) => {
-   return (store) => {
+import { wsActions } from '../slices/feed-ws-slice';
+import { AnyAction } from 'redux'
 
-      let socket = null;
+export const wsMiddleware = (Actions: typeof wsActions) => {
+   return (store: { dispatch: any}) => {
 
-      return (next) => (action) => {
+      let socket: null | WebSocket = null;
+
+      return (next: (actions: AnyAction) => void) => (action: AnyAction) => {
          const { dispatch } = store;
          const { type, payload } = action;
-         const { wsStart, wsSuccess, wsError, wsClose, saveData } =
-            wsActions;
+         const { wsStart, wsSuccess, wsError, wsClose, saveData } = Actions;
 
          if (type === wsStart.type) {
             const wsUrl = payload.token

@@ -2,27 +2,29 @@ import style from './profile-info.module.css'
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useState, useEffect } from 'react'
 import { resetError, authSelector, getUser, updateUser, getToken } from '../../services/slices/auth-slice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../services'
 import { getCookie } from '../../utils/cookies';
+import { FC } from 'react';
+import { TUserData } from '../../utils/types'
 
-const ProfileInfo = () => {
+const ProfileInfo: FC = () => {
 
-   const dispatch = useDispatch()
-   const { error, userData } = useSelector(authSelector)
-   const [formData, setFormData] = useState({
+   const dispatch = useAppDispatch()
+   const { error, userData } = useAppSelector(authSelector)
+   const [formData, setFormData] = useState<TUserData>({
       name: '',
       email: '',
       password: ''
    })
-   const [btns, viewBtns] = useState(false)
+   const [btns, viewBtns] = useState<boolean>(false)
 
    useEffect(() => {
       if (
          localStorage.getItem("refreshToken") &&
          getCookie("accessToken") == null
       ) {
-         // @ts-ignore
-         dispatch(updateToken()).then(() => dispatch(getUser()));
+         
+         dispatch(getToken()).then(() => dispatch(getUser()));
       }
       if (getCookie("accessToken")) {
          dispatch(getUser());
@@ -34,7 +36,7 @@ const ProfileInfo = () => {
       viewBtns(true)
    }
 
-   const resetForm = e => {
+   const resetForm = (e: { preventDefault: () => void }) => {
       e.preventDefault()
       viewBtns(false)
       setFormData({
@@ -44,10 +46,9 @@ const ProfileInfo = () => {
       })
    }
 
-   const updateUserInfo = e => {
+   const updateUserInfo = (e: { preventDefault: () => void }) => {
       e.preventDefault()
       viewBtns(false)
-      // @ts-ignore
       dispatch(updateUser(formData))
    }
 
@@ -60,7 +61,7 @@ const ProfileInfo = () => {
       })
    }, [userData])
 
-   const changeFormData = e => {
+   const changeFormData = (e: {target:{name:string, value: string}}) => {
       setFormData({
          ...formData,
          [e.target.name]: e.target.value

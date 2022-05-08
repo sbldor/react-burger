@@ -1,4 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { TOrder } from '../../utils/types';
+import { TRootState } from '../index'
+
+type TInitialState = {
+   webSocket: null | WebSocket ,
+   isConnected: boolean,
+   hasError: boolean,
+   feed: TOrder[],
+   total: null | number,
+   totalToday: null | number,
+}
 
 const initialState = {
    webSocket: null,
@@ -7,7 +18,7 @@ const initialState = {
    feed: [],
    total: null,
    totalToday: null,
-};
+} as TInitialState
 
 export const feedWsSlice = createSlice({
    name: "webSocket",
@@ -38,5 +49,5 @@ export const feedWsSlice = createSlice({
 
 export const { wsStart, wsSuccess, wsError, wsClose, saveData } = feedWsSlice.actions;
 export const wsActions = feedWsSlice.actions;
-export const wsSelector = (state) => state.webSocket;
+export const wsSelector = (state: TRootState) => state.webSocket;
 export const wsReducer = feedWsSlice.reducer;
