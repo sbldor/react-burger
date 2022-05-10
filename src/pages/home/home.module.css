@@ -1,0 +1,6 @@
+.main {
+   display: flex;
+   justify-content: center;
+   gap: 60px;
+   margin: 0 auto 0;
+}

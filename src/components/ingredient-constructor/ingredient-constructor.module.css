@@ -1,0 +1,9 @@
+.ingredients {
+   display: flex;
+   align-items: center;
+   margin-bottom: 16px;
+}
+
+.ingredients:last-of-type {
+   margin-bottom: 0;
+}
