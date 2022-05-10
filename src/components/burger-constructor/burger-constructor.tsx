@@ -7,7 +7,7 @@ import { ingredientsSelector,
          addIngredientToConstructor,
          deleteIngredientFromConstructor 
       } from '../../services/slices/ingredients-slice';
-import { useDrop } from 'react-dnd';
+import { useDrop, DropTargetMonitor } from 'react-dnd';
 import { FC } from 'react'
 import { TIngredient } from '../../utils/types';
 
@@ -28,7 +28,7 @@ const BurgerConstructor: FC = () => {
             dispatch(addIngredientToConstructor(item.ingr))
          }
       },
-      collect: monitor => ({
+      collect: (monitor: DropTargetMonitor) => ({
          isOver: monitor.isOver()
       })
    })

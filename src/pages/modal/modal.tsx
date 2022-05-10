@@ -10,7 +10,7 @@ const IngredientModalPage: FC = () => {
 
    const { ingredientId } = useParams<{ ingredientId: string}>()
    const { loading, ingredients } = useAppSelector(ingredientsSelector)
-   const currentIngr =  ingredients.find((ingr: TIngredient) => ingr._id === ingredientId)
+   const currentIngr =  ingredients.find((ingr) => ingr._id === ingredientId)
    
    return (
       <>

@@ -54,7 +54,7 @@ const IngredientConstructor: FC<IIngredientConstructor> = ({ item, index }) => {
       }
    })
 
-   const opacity: { opacity: number} = { opacity: isDragging ? 0 : 1 }
+   const opacity: { opacity: number} = { opacity: isDragging ? 0.2 : 1 }
 
    drag(drop(ref))
 

@@ -36,7 +36,7 @@ const ModalOrder: FC<IModalOrder> = ({status}) => {
          };
       }
 
-      const currentOrder: TOrder = feed.find((el: TOrder) => el._id === id);
+      const currentOrder: TOrder = feed.find((el) => el._id === id);
       if (currentOrder) setActiveOrder(currentOrder);
    }, [feed]);
 

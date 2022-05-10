@@ -17,7 +17,7 @@ const FinalResult: FC = () => {
    const history = useHistory()
    const dispatch = useAppDispatch()
 
-   const finalTotal: number = React.useMemo(
+   const finalTotal = React.useMemo<number>(
       () => {
          const total = constructorIngredients.filter((ingr) => ingr.type !== 'bun').reduce((sum, it) => sum + it.price, 0);
          const totalBun = constructorIngredients.some((ingr) => ingr.type === 'bun') ? constructorIngredients.find((ingr) => ingr.type === 'bun').price : 0
@@ -34,7 +34,6 @@ const FinalResult: FC = () => {
          history.replace({ pathname: '/login' })
       }
    }
-
 
    return (
       <>

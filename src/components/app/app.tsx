@@ -21,14 +21,9 @@ const App = () => {
   const location = useLocation<TLocation>()
   const history = useHistory()
   const background = location.state && location.state.background;
-  const { auth } = useAppSelector(authSelector)
-  
 
   useEffect(() => {
     dispatch(fetchIngredients());
-    // if (localStorage.getItem("refreshToken") && !auth && !background) {
-    //   dispatch(getToken());
-    // }
   }, []);
 
   const closeModal: () => void = () => {

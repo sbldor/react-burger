@@ -24,7 +24,7 @@ const FeedItem: FC<IFeedItem> = ({feed}) => {
       ingrFeed.push(ingredients.find((el) => el._id === item));
    });
 
-   const finalTotal: number = React.useMemo(
+   const finalTotal = React.useMemo<number>(
       () => ingrFeed.length !== 0 ? ingrFeed.reduce((sum, item) => sum + item.price, 0) : 0, [ingrFeed]
    ) 
 
