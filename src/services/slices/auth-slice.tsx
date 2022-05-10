@@ -18,7 +18,7 @@ type TInitialState = {
 }
 
 export const initialState = {
-   auth: false,
+   auth: !!getCookie('accessToken'),
    loading: false,
    error: '',
    userData: {
@@ -34,9 +34,7 @@ const authSlice = createSlice({
    name: 'aurh',
    initialState,
    reducers: {
-      checkAuth: state => { 
-         localStorage.getItem('refreshToken') ? getToken() : state.auth = false
-      },
+      checkAuth: state => { getCookie('refreshToken') != null ? getUser() : state.auth = false },
       resetError: state => { 
          state.error = '' 
       },
@@ -60,8 +58,8 @@ const authSlice = createSlice({
             state.userData.email = payload.user.email
             state.userData.password = ''
             state.error = ''
-            setCookie('accessToken', payload.accessToken, { expires: 20 * 60 });
-            localStorage.setItem('refreshToken', payload.refreshToken);
+            setCookie('accessToken', payload.accessToken);
+            setCookie('refreshToken', payload.refreshToken)
          })
          .addCase(registerUser.rejected, (state, { payload }) => {
             state.loading = false
@@ -108,10 +106,11 @@ const authSlice = createSlice({
             state.userData.name = payload.user.name
             state.userData.email = payload.user.email
             state.userData.password = ''
-            setCookie('accessToken', payload.accessToken, { expires: 20 * 60 });
-            localStorage.setItem('refreshToken', payload.refreshToken);
+            setCookie('accessToken', payload.accessToken);
+            setCookie('refreshToken', payload.refreshToken)
          })
          .addCase(loginRequest.rejected, (state, { payload }) => {
+            state.auth = false
             state.loading = false
             state.error = `Войти в аккаунт не удалось: ${payload}`
          })
@@ -128,7 +127,7 @@ const authSlice = createSlice({
             state.userData.password = ''
             state.error = ''
             deleteCookie('accessToken')
-            localStorage.removeItem('refreshToken');
+            deleteCookie('refreshToken')
          })
          .addCase(logoutRequest.rejected, (state, { payload }) => {
             state.loading = false
@@ -179,8 +178,8 @@ const authSlice = createSlice({
          })
          .addCase(getToken.fulfilled, (state, { payload }) => {
             setCookie('accessToken', payload.accessToken, { expires: 20 * 60 })
-            localStorage.setItem('refreshToken', payload.refreshToken);
-            state.auth = true
+            setCookie('accessToken', payload.accessToken)
+            setCookie('refreshToken', payload.refreshToken)
          })
          .addCase(getToken.rejected, (state, { payload }) => {
             state.auth = false
@@ -191,7 +190,7 @@ const authSlice = createSlice({
 })
 
 export const {
-   checkAuth,
+   // checkAuth,
    resetError,
    resetForgotPass,
    resetResetPass
@@ -219,7 +218,6 @@ export const registerUser = createAsyncThunk(
 
 export const forgotPassword = createAsyncThunk(
    'auth/forgotPassword',
-   // @ts-ignore
    async (email: string, { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + 'password-reset', {
@@ -237,7 +235,6 @@ export const forgotPassword = createAsyncThunk(
 
 export const resetPassword = createAsyncThunk(
    'auth/resetPassword',
-   // @ts-ignore
    async (form: TResetData, { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + 'password-reset/reset', {
@@ -255,7 +252,6 @@ export const resetPassword = createAsyncThunk(
 
 export const loginRequest = createAsyncThunk(
    'auth/login',
-   // @ts-ignore
    async (form: TLoginData, { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + 'auth/login', {
@@ -273,13 +269,12 @@ export const loginRequest = createAsyncThunk(
 
 export const logoutRequest = createAsyncThunk(
    'auth/logoutRequest',
-   // @ts-ignore
    async (_, { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + 'auth/logout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: localStorage.getItem('refreshToken') })
+            body: JSON.stringify({ token: getCookie('refreshToken') })
          })
          const data = await resCheck(res)
          return data
@@ -291,10 +286,8 @@ export const logoutRequest = createAsyncThunk(
 
 export const getUser = createAsyncThunk(
    'auth/getUser',
-   // @ts-ignore
    async (_, { rejectWithValue }) => {
       try {
-         if (getCookie('accessToken')) {
             const res = await fetch(baseUrl + 'auth/user', {
                method: 'GET',
                headers: {
@@ -304,7 +297,6 @@ export const getUser = createAsyncThunk(
             })
             const data = await resCheck(res)
             return data
-         } 
       } catch (err) {
          return rejectWithValue(err)
       }
@@ -313,7 +305,6 @@ export const getUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
    'auth/updateUser',
-   // @ts-ignore
    async (form: TUserData, { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + 'auth/user', {
@@ -334,13 +325,12 @@ export const updateUser = createAsyncThunk(
 
 export const getToken = createAsyncThunk(
    'auth/getToken',
-   // @ts-ignore
    async (_, { rejectWithValue }) => {
       try {
          const res = await fetch(baseUrl + 'auth/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'token': localStorage.getItem('refreshToken') })
+            body: JSON.stringify({ 'token': getCookie('refreshToken') })
          })
          const data = await resCheck(res)
          return data

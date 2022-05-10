@@ -19,16 +19,12 @@ const ProfileInfo: FC = () => {
    const [btns, viewBtns] = useState<boolean>(false)
 
    useEffect(() => {
-      if (
-         localStorage.getItem("refreshToken") &&
-         getCookie("accessToken") == null
-      ) {
-         
-         dispatch(getToken()).then(() => dispatch(getUser()));
+      if (getCookie('refreshToken') != null && getCookie('accessToken') === null) {
+         dispatch(getToken()).then(_ => dispatch(getUser()))
       }
-      if (getCookie("accessToken")) {
-         dispatch(getUser());
-      }
+      if (getCookie('accessToken')) {
+         dispatch(getToken()).then(_ => dispatch(getUser()))
+      } 
    }, []);
 
    const onFocus = () => {

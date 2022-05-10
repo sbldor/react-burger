@@ -26,9 +26,9 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchIngredients());
-    if (localStorage.getItem("refreshToken") && !auth && !background) {
-      dispatch(getToken());
-    }
+    // if (localStorage.getItem("refreshToken") && !auth && !background) {
+    //   dispatch(getToken());
+    // }
   }, []);
 
   const closeModal: () => void = () => {

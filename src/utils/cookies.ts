@@ -1,16 +1,16 @@
 export const setCookie = (name: string, value: string, props?: {[key: string]: number | string | boolean | Date}) => {
-   props = props || {};
+   props = props || { path: '/' }
    let exp = props.expires;
    if (typeof exp == 'number' && exp) {
       const d = new Date();
       d.setTime(d.getTime() + exp * 1000);
       exp = props.expires = d;
    }
-   if (exp instanceof Date && exp.toUTCString) {
-      props.expires = exp.toUTCString();
-   }
-   value = encodeURIComponent(value);
+   if (exp instanceof Date) exp = exp.toUTCString()
+   if (value === null) value = ''
+   value = encodeURIComponent(value)
    let updatedCookie = name + '=' + value;
+   updatedCookie += ';path=/'
    for (const propName in props) {
       updatedCookie += '; ' + propName;
       const propValue = props[propName];
