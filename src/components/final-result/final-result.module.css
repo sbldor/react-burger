@@ -1,0 +1,13 @@
+.container {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   align-items: center;
+   align-self:flex-end
+}
+
+.total {
+   display: flex;
+   justify-content: center;
+   align-items:center;
+}
