@@ -64,6 +64,9 @@
   npm run start
 ```
 
+## Доработка проекта
+* Адаптив
+
 
 ## [GitHubPages](https://sbldor.github.io/react-burger/)
 
