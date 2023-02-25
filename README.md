@@ -1,6 +1,4 @@
 
-#### link
-https://sbldor.github.io/react-burger/
 
 # Приложение Stellar Burger
 Веб-приложение космической бургерной (почти Burger king).
